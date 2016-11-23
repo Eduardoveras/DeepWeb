@@ -2,37 +2,58 @@ package com.evapps.UI;
 
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Calendar;
-import com.vaadin.ui.components.calendar.CalendarComponentEvents;
-import com.vaadin.ui.components.calendar.event.EditableCalendarEvent;
-import com.vaadin.ui.components.calendar.handler.BasicEventMoveHandler;
-import com.vaadin.ui.components.calendar.handler.BasicEventResizeHandler;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.*;
 
 /**
- * Created by Eduardo veras on 16-Oct-16.
+ * Created by Eduardo veras on 22-Nov-16.
  */
 
 
 
-@SpringUI(path = "/calendar")
+@SpringUI
 @Theme("valo")
 public class MainUI extends UI {
+
+    private VerticalLayout layout = new VerticalLayout();
 
 
     @Override
     protected void init(VaadinRequest request) {
 
+            setupLayout();
+            addHeader();
+        }
+
+
+    public void setupLayout()
+    {
+        Page.getCurrent().setTitle("Spring Vaadin Calendar");
+
+        layout= new VerticalLayout();
+        layout.setSpacing(true);
+        layout.setMargin(true);
+        layout.setSizeFull();
+        layout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
+        setContent(layout);
 
     }
+
+    public void addHeader()
+    {
+        Label header = new Label("THE CALENDAR OF LIFE");
+        header.addStyleName(ValoTheme.LABEL_H1);
+        header.setSizeUndefined();
+        layout.addComponent(header);
+    }
+
+
+
+
+
 }

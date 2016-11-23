@@ -1,23 +1,23 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.0.BUILD-SNAPSHOT'
+		springBootVersion = '1.4.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
+
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
+apply plugin: 'spring-boot'
 
 jar {
-	baseName = 'demo'
+	baseName = 'app'
 	version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
@@ -25,15 +25,28 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
-	maven { url "https://repo.spring.io/milestone" }
+	maven {
+		url "http://maven.vaadin.com/vaadin-addons"
+	}
 }
 
 
+
+
+
 dependencies {
-	compile('com.vaadin:vaadin-spring-boot-starter:1.1.0')
-	runtime('org.postgresql:postgresql')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-mail')
+	//compile('org.springframework.boot:spring-boot-starter-security')
+	compile('com.vaadin:vaadin-spring-boot-starter:1.0.2')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.vaadin.addons:numberfield:0.5.1')
+
+	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	// https://mvnrepository.com/artifact/com.sendgrid/sendgrid-java
+	compile 'com.sendgrid:sendgrid-java:3.1.0'
+
 }
 
 dependencyManagement {
@@ -41,3 +54,6 @@ dependencyManagement {
 		mavenBom "com.vaadin:vaadin-bom:7.7.3"
 	}
 }
+group 'Agenda'
+version '1.0-SNAPSHOT'
+
