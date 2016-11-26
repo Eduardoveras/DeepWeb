@@ -10,7 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +25,7 @@ public class Receipt implements Serializable {
     private String fiscalCode;
     @ManyToOne
     private User user;
+    private Timestamp transactionDate;
     private ArrayList<Integer> productList;
     private Float total;
     private OrderStatus status;
@@ -34,6 +38,7 @@ public class Receipt implements Serializable {
     public Receipt(User user, ArrayList<Integer> productList, Float total){
         this.setFiscalCode(UUID.randomUUID().toString().split("-")[0].toUpperCase());
         this.setUser(user);
+        this.setTransactionDate(new Timestamp(Calendar.getInstance().getTime().getTime())); // Today's Date and Current Time
         this.setProductList(productList);
         this.setTotal(total);
         this.setStatus(OrderStatus.PENDING);
@@ -77,5 +82,13 @@ public class Receipt implements Serializable {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public Timestamp getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Timestamp transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }
