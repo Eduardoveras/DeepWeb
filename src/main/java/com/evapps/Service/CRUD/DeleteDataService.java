@@ -31,7 +31,7 @@ public class DeleteDataService {
 
         try {
             Product product = productRepository.findByProductId(productId);
-            
+
             // Applying Cascade
             for (History history:
                  historyRepository.findAll()) {

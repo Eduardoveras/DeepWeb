@@ -11,6 +11,7 @@ import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
+import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,22 +63,20 @@ public class CreateDataService
         if (productList.isEmpty())
             throw new IllegalArgumentException("There needs to be purchased items to realize a transaction");
 
-        if (total < 0.01f)
+        if (total < 0.00f)
             throw new IllegalArgumentException("Nothing is free in life");
 
         try {
 
             // Clearing the shoppingCart
             History history = historyRepository.findByUser(email);
-            Set<Product> shoppingCart = history.getShoppingCart(); // Fetching the user's shopping cart
-
+            Set<Product> shoppingCart = history.getShoppingCart(); // Fetching the user's shoppingCart
             for (Integer i:
                  productList) {
                 Product product = productRepository.findByProductId(i); // Finding the product in the DB
                 shoppingCart.remove(product); // Removing product
             }
-
-            history.setShoppingCart(shoppingCart); // Updating the shopping cart
+            history.setShoppingCart(shoppingCart); // Updating History
 
             return receiptRepository.save(new Receipt(userRepository.findByEmail(email), productList, total));
         } catch (PersistenceException exp){
