@@ -18,23 +18,15 @@ import java.util.UUID;
 public class User implements Serializable{
     // Attributes
     @Id
-    private String userId;
-    @NotNull
     private String email;
     @NotNull
     private String firstName;
     @NotNull
     private String lastName;
-    private Date birthDate;
-    @NotNull
-    private Gender gender;
     @NotNull
     private String password;
     @NotNull
     private Permission role;
-    @ManyToOne
-    private Clinic clinic;
-    @Column(length = 5000000)
     private Byte[] photo;
 
 
@@ -43,27 +35,15 @@ public class User implements Serializable{
 
     }
 
-    public User(Clinic clinic, String email, String firstName, String lastName, Date birthDate, Gender gender, String password, Permission role){
-        this.setUserId("CH-" + clinic.getClinicPrefix() + "-" + UUID.randomUUID().toString().split("-")[0].toUpperCase());
+    public User(String email, String firstName, String lastName, String password, Permission role){
         this.setEmail(email.toLowerCase());
         this.setFirstName(firstName.toLowerCase());
         this.setLastName(lastName.toUpperCase());
-        this.setBirthDate(birthDate);
-        this.setGender(gender);
         this.setPassword(password);
         this.setRole(role);
-        this.setClinic(clinic);
     }
 
     //Getters and Setters
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -90,22 +70,6 @@ public class User implements Serializable{
 
     public String getFullName() { return firstName.toUpperCase() + " " + lastName; }
 
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -120,14 +84,6 @@ public class User implements Serializable{
 
     public void setRole(Permission role) {
         this.role = role;
-    }
-
-    public Clinic getClinic() {
-        return clinic;
-    }
-
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
     }
 
     public Byte[] getPhoto() {
