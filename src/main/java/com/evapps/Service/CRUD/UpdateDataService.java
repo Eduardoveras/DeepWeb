@@ -3,7 +3,6 @@
  */
 package com.evapps.Service.CRUD;
 
-import com.amazonaws.services.kms.model.InvalidArnException;
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.User;
@@ -54,7 +53,7 @@ public class UpdateDataService {
         try {
             // Updating user
             userRepository.save(user);
-            
+
             // Updating History
             History history = historyRepository.findByUser(user.getEmail());
 

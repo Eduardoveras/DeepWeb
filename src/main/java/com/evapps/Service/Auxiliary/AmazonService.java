@@ -1,4 +1,4 @@
-package com.evapps.Service;
+package com.evapps.Service.Auxiliary;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;

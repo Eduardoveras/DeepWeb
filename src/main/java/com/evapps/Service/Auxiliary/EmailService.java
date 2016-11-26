@@ -1,4 +1,4 @@
-package com.evapps.Service;
+package com.evapps.Service.Auxiliary;
 
 import com.sendgrid.*;
 import org.springframework.stereotype.Service;
