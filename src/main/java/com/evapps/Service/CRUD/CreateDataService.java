@@ -62,7 +62,7 @@ public class CreateDataService
         if (productList.isEmpty())
             throw new IllegalArgumentException("There needs to be purchased items to realize a transaction");
 
-        if (total < 0.00f)
+        if (total < 0.01f)
             throw new IllegalArgumentException("Nothing is free in life");
 
         try {
