@@ -40,7 +40,10 @@ public class ReadDataService {
 
     public User findRegisteredUserAccount(String email) { return userRepository.findByEmail(email); } // Used for profiles
 
-    public User findRegisteredUserAccount(String email, String password) { return userRepository.findUserAccountWithUsernameAndPassword(email, password); }
+    public boolean findRegisteredUserAccount(String email, String password) {
+        User user = userRepository.findUserAccountWithUsernameAndPassword(email, password);
+        return (user != null);
+    }
 
     // Complete Search
     public List<Product> findAllRegisteredProducts() { return productRepository.findAll(); }

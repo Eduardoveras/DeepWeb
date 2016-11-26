@@ -18,9 +18,8 @@ public class IndexController {
     @GetMapping("/")
     public ModelAndView index(Model model){
 
+        // TODO: Add filter to redirect buyers to StoreController and ADMIN to AdminController
+
         return new ModelAndView("");
     }
-
-
-    // Posts
 }
