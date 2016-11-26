@@ -3,6 +3,8 @@
  */
 package com.evapps.Entity;
 
+import com.evapps.Tools.Enums.OrderStatus;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -22,6 +24,7 @@ public class Receipt implements Serializable {
     private User user;
     private ArrayList<Integer> productList;
     private Float total;
+    private OrderStatus status;
 
     // Constructors
     public Receipt(){
@@ -33,6 +36,7 @@ public class Receipt implements Serializable {
         this.setUser(user);
         this.setProductList(productList);
         this.setTotal(total);
+        this.setStatus(OrderStatus.PENDING);
     }
 
     public String getFiscalCode() {
@@ -65,5 +69,13 @@ public class Receipt implements Serializable {
 
     public void setTotal(Float total) {
         this.total = total;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 }
