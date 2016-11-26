@@ -5,9 +5,11 @@ package com.evapps.Service.CRUD;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
+import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
 import com.evapps.Tools.Enums.Permission;
 import freemarker.template.utility.NullArgumentException;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
+import java.util.ArrayList;
+import java.util.Set;
 
 @Service
 public class CreateDataService
@@ -24,6 +28,8 @@ public class CreateDataService
     private HistoryRepository historyRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ReceiptRepository receiptRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -38,6 +44,42 @@ public class CreateDataService
 
         try {
             return productRepository.save(new Product(productName, supplier, productDescription, productPrice, productInStock));
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (NullArgumentException exp){
+            throw new NullArgumentException("Null Argument Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
+    // Receipt Creation
+    public Receipt registerTransaction(String email, ArrayList<Integer> productList, Float total) throws Exception {
+
+        if (!isEmailAddressTaken(email))
+            throw new IllegalArgumentException("This user account does not exist");
+
+        if (productList.isEmpty())
+            throw new IllegalArgumentException("There needs to be purchased items to realize a transaction");
+
+        if (total < 0.00f)
+            throw new IllegalArgumentException("Nothing is free in life");
+
+        try {
+
+            // Clearing the shoppingCart
+            History history = historyRepository.findByUser(email);
+            Set<Product> shoppingCart = history.getShoppingCart(); // Fetching the user's shopping cart
+
+            for (Integer i:
+                 productList) {
+                Product product = productRepository.findByProductId(i); // Finding the product in the DB
+                shoppingCart.remove(product); // Removing product
+            }
+
+            history.setShoppingCart(shoppingCart); // Updating the shopping cart
+
+            return receiptRepository.save(new Receipt(userRepository.findByEmail(email), productList, total));
         } catch (PersistenceException exp){
             throw new PersistenceException("Persistence Error --> " + exp.getMessage());
         } catch (NullArgumentException exp){
