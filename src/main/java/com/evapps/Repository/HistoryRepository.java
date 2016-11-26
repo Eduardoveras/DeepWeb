@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 
-public interface HistoryRepository extends JpaRepository<History, String> {
+public interface HistoryRepository extends JpaRepository<History, Integer> {
 
     History findByHistoryId(Integer historyId);
 
