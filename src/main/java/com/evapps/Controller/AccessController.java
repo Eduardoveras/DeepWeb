@@ -60,6 +60,14 @@ public class AccessController {
         return new ModelAndView("");
     }
 
+    @GetMapping("/transaction/{fiscalCode}")
+    public ModelAndView viewTransaction(Model model, @PathVariable("fiscalCode") String fiscalCode){
+
+        model.addAttribute("transaction", RDS.findRegisteredTransaction(fiscalCode));
+
+        return new ModelAndView("");
+    }
+
     // Post
     @PostMapping("/login")
     public String login(@RequestParam("email") String email, @RequestParam("password") String password){
@@ -117,4 +125,8 @@ public class AccessController {
     }
 
     // TODO: Add edit posts and Upload Photo
+
+    // TODO: RemoveFromCart
+    // TODO: ClearCart
+    // TODO: CancelTransaction
 }
