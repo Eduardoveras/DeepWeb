@@ -1,9 +1,8 @@
 package com.evapps.Service;
 
-import com.evapps.Tools.Classes.CalendarEvent;
 import com.sendgrid.*;
 import org.springframework.stereotype.Service;
-import java.awt.*;
+
 import java.io.IOException;
 
 /**
