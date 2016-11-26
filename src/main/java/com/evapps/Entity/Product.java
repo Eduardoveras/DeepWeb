@@ -14,7 +14,7 @@ public class Product implements Serializable {
     //Attributes
     @Id
     @GeneratedValue
-    private String productId;
+    private Integer productId;
     @NotNull
     private String productName;
     private String supplier;
@@ -40,11 +40,11 @@ public class Product implements Serializable {
     }
 
     // Getters and Setters
-    public String getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 

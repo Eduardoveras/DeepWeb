@@ -12,11 +12,11 @@ import com.evapps.Repository.UserRepository;
 import com.evapps.Tools.Enums.Permission;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
-import javax.xml.ws.ServiceMode;
 
-@ServiceMode
+@Service
 public class CreateDataService
 {
     // Repositories

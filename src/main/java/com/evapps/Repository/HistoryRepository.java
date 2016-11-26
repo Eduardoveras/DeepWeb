@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface HistoryRepository extends JpaRepository<History, String> {
 
-    History findByHistoryId(String historyId);
+    History findByHistoryId(Integer historyId);
 
     @Query("select h from History h where h.user.email = :email")
     History findByUser(@Param("email") String email);

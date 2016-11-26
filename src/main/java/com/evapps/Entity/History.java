@@ -14,7 +14,7 @@ public class History implements Serializable {
     // Attributes
     @Id
     @GeneratedValue
-    private String historyId;
+    private Integer historyId;
     @OneToOne
     private User user;
     @ManyToMany
@@ -34,11 +34,11 @@ public class History implements Serializable {
     }
 
     // Getters and Setters
-    public String getHistoryId() {
+    public Integer getHistoryId() {
         return historyId;
     }
 
-    public void setHistoryId(String historyId) {
+    public void setHistoryId(Integer historyId) {
         this.historyId = historyId;
     }
 
