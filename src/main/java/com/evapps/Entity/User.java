@@ -21,6 +21,9 @@ public class User implements Serializable{
     @NotNull
     private String lastName;
     @NotNull
+    @Column(length = 1000)
+    private String shippingAddress;
+    @NotNull
     private String password;
     @NotNull
     private Permission role;
@@ -33,10 +36,11 @@ public class User implements Serializable{
 
     }
 
-    public User(String email, String firstName, String lastName, String password, Permission role){
+    public User(String email, String firstName, String lastName, String shippingAddress, String password, Permission role){
         this.setEmail(email.toLowerCase());
         this.setFirstName(firstName.toLowerCase());
         this.setLastName(lastName.toUpperCase());
+        this.setShippingAddress(shippingAddress);
         this.setPassword(password);
         this.setRole(role);
     }
@@ -108,5 +112,13 @@ public class User implements Serializable{
             bytes[i] = buffer[i];
         }
         return bytes;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }

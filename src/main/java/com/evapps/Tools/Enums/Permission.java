@@ -5,5 +5,6 @@ package com.evapps.Tools.Enums;
 
 public enum Permission {
     ADMIN,
-    USER
+    COMPANY,
+    CONSUMER
 }
