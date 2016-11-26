@@ -1,3 +1,6 @@
+/**
+ * Created by Djidjelly Siclait on 11/26/2016.
+ */
 package com.evapps.Repository;
 
 import com.evapps.Entity.History;
@@ -7,9 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Created by eva_c on 11/6/2016.
- */
 public interface HistoryRepository extends JpaRepository<History, String> {
 
     History findByHistoryId(String historyId);

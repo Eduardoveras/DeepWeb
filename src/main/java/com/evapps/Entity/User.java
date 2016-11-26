@@ -3,15 +3,12 @@
  */
 package com.evapps.Entity;
 
-import com.evapps.Tools.Enums.Gender;
 import com.evapps.Tools.Enums.Permission;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")

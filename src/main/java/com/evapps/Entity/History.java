@@ -1,48 +1,36 @@
+/**
+ * Created by Djidjelly Siclait on 11/26/2016.
+ */
 package com.evapps.Entity;
 
-import com.evapps.Tools.Enums.SurgeryType;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Created by eva_c on 11/6/2016.
- */
 @Entity
 @Table(name="history")
 public class History implements Serializable {
     // Attributes
     @Id
+    @GeneratedValue
     private String historyId;
-    @NotNull
-    private String visitObjective;
-    @NotNull
-    private String observations;
-    private String specialConditions;
-    private SurgeryType surgeryType;
-    private ArrayList<byte[]> photos;
-    private ArrayList<String> medicalData;
-    @Column(unique = true)
-    private String consultationReference;
+    @OneToOne
+    private User user;
+    @ManyToMany
+    private Set<Product> browsingHistory;
+    @ManyToMany
+    private Set<Product> shoppingCart;
 
     // Constructors
     public History(){
 
     }
 
-    public History(Patient patient, String visitObjective, String observations, String specialConditions, ArrayList<byte[]> photos, SurgeryType surgeryType, ArrayList<String> medicalData, String consultationReference) {
-        this.setHistoryId(patient.getPatientId() + "-H-" + UUID.randomUUID().toString().split("-")[0].toUpperCase());
-        this.setPatient(patient);
-        this.setVisitObjective(visitObjective);
-        this.setObservations(observations);
-        this.setSpecialConditions(specialConditions);
-        this.setPhotos(photos);
-        this.setSurgeryType(surgeryType);
-        this.setMedicalData(medicalData);
-        this.setConsultationReference(consultationReference);
+    public History(User user) {
+        this.setUser(user);
+        this.setBrowsingHistory(new HashSet<>());
+        this.setShoppingCart(new HashSet<>());
     }
 
     // Getters and Setters
@@ -54,59 +42,27 @@ public class History implements Serializable {
         this.historyId = historyId;
     }
 
-    public String getVisitObjective() {
-        return visitObjective;
+    public User getUser() {
+        return user;
     }
 
-    public void setVisitObjective(String visitObjective) {
-        this.visitObjective = visitObjective;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getObservations() {
-        return observations;
+    public Set<Product> getBrowsingHistory() {
+        return browsingHistory;
     }
 
-    public void setObservations(String observations) {
-        this.observations = observations;
+    public void setBrowsingHistory(Set<Product> browsingHistory) {
+        this.browsingHistory = browsingHistory;
     }
 
-    public String getSpecialConditions() {
-        return specialConditions;
+    public Set<Product> getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setSpecialConditions(String specialConditions) {
-        this.specialConditions = specialConditions;
-    }
-
-    public SurgeryType getSurgeryType() {
-        return surgeryType;
-    }
-
-    public void setSurgeryType(SurgeryType surgeryType) {
-        this.surgeryType = surgeryType;
-    }
-
-    public ArrayList<byte[]> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(ArrayList<byte[]> photos) {
-        this.photos = photos;
-    }
-
-    public ArrayList<String> getMedicalData() {
-        return medicalData;
-    }
-
-    public void setMedicalData(ArrayList<String> medicalData) {
-        this.medicalData = medicalData;
-    }
-
-    public String getConsultationReference() {
-        return consultationReference;
-    }
-
-    public void setConsultationReference(String consultationReference) {
-        this.consultationReference = consultationReference;
+    public void setShoppingCart(Set<Product> shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 }
