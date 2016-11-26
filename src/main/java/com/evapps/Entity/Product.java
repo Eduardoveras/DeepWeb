@@ -13,6 +13,7 @@ import java.util.UUID;
 public class Product implements Serializable {
     //Attributes
     @Id
+    @GeneratedValue
     private String productId;
     @NotNull
     private String productName;
