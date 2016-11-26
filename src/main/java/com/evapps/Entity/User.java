@@ -3,6 +3,7 @@
  */
 package com.evapps.Entity;
 
+import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -27,6 +28,8 @@ public class User implements Serializable{
     private String password;
     @NotNull
     private Permission role;
+    @NotNull
+    private AccountStatus status;
     @Column(length = 500000)
     private Byte[] photo;
 
@@ -43,6 +46,7 @@ public class User implements Serializable{
         this.setShippingAddress(shippingAddress);
         this.setPassword(password);
         this.setRole(role);
+        this.setStatus(AccountStatus.ACTIVE);
     }
 
     //Getters and Setters
@@ -120,5 +124,13 @@ public class User implements Serializable{
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
     }
 }
