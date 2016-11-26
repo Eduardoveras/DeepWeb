@@ -27,6 +27,7 @@ public class User implements Serializable{
     private String password;
     @NotNull
     private Permission role;
+    @Column(length = 500000)
     private Byte[] photo;
 
 

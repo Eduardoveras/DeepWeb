@@ -3,10 +3,8 @@
  */
 package com.evapps.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -16,20 +14,23 @@ public class Product implements Serializable {
     //Attributes
     @Id
     private String productId;
+    @NotNull
     private String productName;
     private String supplier;
     private String productDescription;
+    @NotNull
     private Float productPrice;
+    @NotNull
     private Integer productInStock;
-
+    @Column(length = 500000)
+    private Byte[] photo;
 
     // Constructors
     public Product(){
 
     }
 
-    public Product(Clinic clinic, String productName, String supplier, String productDescription, Float productPrice, Integer productInStock){
-        this.setProductId(clinic.getClinicPrefix() + "-ITEM-" + UUID.randomUUID().toString().split("-")[0].toUpperCase());
+    public Product(String productName, String supplier, String productDescription, Float productPrice, Integer productInStock){
         this.setProductName(productName);
         this.setSupplier(supplier);
         this.setProductDescription(productDescription);
@@ -84,5 +85,23 @@ public class Product implements Serializable {
 
     public void setSupplier(String supplier) {
         this.supplier = supplier;
+    }
+
+    public Byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Byte[] photo) {
+        this.photo = photo;
+    }
+
+    // Auxiliary Function
+    private byte[] toPrimitives(Byte[] buffer) {
+
+        byte[] bytes = new byte[buffer.length];
+        for(int i = 0; i < buffer.length; i++){
+            bytes[i] = buffer[i];
+        }
+        return bytes;
     }
 }
