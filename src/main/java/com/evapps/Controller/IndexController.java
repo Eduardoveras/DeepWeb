@@ -40,9 +40,4 @@ public class IndexController {
         return new ModelAndView("homepage/index");
     }
 
-    // Gets
-    @GetMapping("/")
-    public ModelAndView storeFront(Model model){
-        return new ModelAndView("StoreFront/index");
-    }
 }
