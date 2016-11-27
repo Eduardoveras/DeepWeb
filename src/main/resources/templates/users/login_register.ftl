@@ -34,8 +34,8 @@
                         <br />
 
                         <div>
-                            <h1><i class="fa fa-plus-circle"></i> Clinic Helper!</h1>
-                            <p>©2016 All Rights Reserved. <br>Clinic Helper Privacy and Terms</p>
+                            <h1><i class="fa fa-plus-circle"></i> Amazon Platano!</h1>
+                            <p>©2016 All Rights Reserved. <br>Amazon Platano Privacy and Terms</p>
                         </div>
                     </div>
                 </form>
@@ -71,8 +71,8 @@
                         <br />
 
                         <div>
-                            <h1><i class="fa fa-plus-circle"></i> Clinic helper!</h1>
-                            <p>©2016 All Rights Reserved. Clinic Helper. Privacy and Terms</p>
+                            <h1><i class="fa fa-plus-circle"></i> Amazon Platano!</h1>
+                            <p>©2016 All Rights Reserved. Amazon Platano. Privacy and Terms</p>
                         </div>
                     </div>
                 </form>

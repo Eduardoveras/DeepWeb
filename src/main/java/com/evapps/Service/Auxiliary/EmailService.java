@@ -15,9 +15,9 @@ public class EmailService {
     public boolean sendEmail(String emailTo, String Subject, String theContent)
     {
 
-        Email from = new Email("management@clinichelper.com");
+        Email from = new Email("management@amazonplatano.com");
         Email to = new Email(emailTo);
-        Content content = new Content("text/plain", theContent+"\n\n\nEmail Service by Clinic Helper");
+        Content content = new Content("text/plain", theContent+"\n\n\nEmail Service by Amazon Platano");
         Mail mail = new Mail(from, Subject, to, content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));

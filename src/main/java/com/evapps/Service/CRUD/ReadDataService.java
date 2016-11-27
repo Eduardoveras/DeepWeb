@@ -11,11 +11,13 @@ import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
+import com.evapps.Service.Auxiliary.EncryptionService;
 import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -30,6 +32,21 @@ public class ReadDataService {
     private ReceiptRepository receiptRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HttpSession session;
+    @Autowired
+    private EncryptionService EncriptService;
+
+
+    public Object getSessionAttr(String name)
+    {
+        return session.getAttribute(name);
+    }
+
+    public void setSessionAttr(String name,Object obj)
+    {
+        session.setAttribute(name,obj);
+    }
 
     // Single Search
     public History findRegisteredUserHistory(String email) { return historyRepository.findByUser(email); }
@@ -86,4 +103,24 @@ public class ReadDataService {
         User user = userRepository.findByEmail(email);
         return (user != null);
     }
+
+    public boolean isUserLoggedIn() {
+        return null != session.getAttribute("user");
+    }
+
+    public void logOut()
+    {
+        session.invalidate();
+    }
+
+    public User getCurrentLoggedUser()
+    {
+        return (User)session.getAttribute("user");
+    }
+
+    // User Queries
+    public User findUserInformation(String email) { return userRepository.findByEmail(email); }
+
+
+
 }

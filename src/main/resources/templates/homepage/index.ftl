@@ -9,16 +9,11 @@
         <!-- page content -->
         <div class="right_col" role="main">
             <div class="">
-                 <#include "_topBoxes.ftl">
                 <div class="row">
 
                     <#if userRole == "ASSISTANT">
-                        <#include "assistant/_appointments.ftl">
-                        <#include "assistant/_calendar.ftl">
-                        <#include "/appointments/_modal.ftl">
-                    <#else>
-                        <#include "doctor/_calendar.ftl">
 
+                    <#else>
 
                     </#if>
 

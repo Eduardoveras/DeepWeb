@@ -3,6 +3,7 @@
  */
 package com.evapps.Controller;
 
+import com.evapps.Entity.User;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -10,10 +11,7 @@ import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -28,17 +26,11 @@ public class AccessController {
     private UpdateDataService URS;
 
     // Gets
-    @GetMapping("/login_page")
-    public ModelAndView loginPage(Model model){
-
-        return new ModelAndView("");
+    @RequestMapping("/login")
+    public ModelAndView fetchLoginView(){
+        return new ModelAndView("/users/login_register");
     }
 
-    @GetMapping("/register_page")
-    public ModelAndView registerPage(Model model){
-
-        return new ModelAndView("");
-    }
 
     @GetMapping("/profile")
     public ModelAndView viewProfile(Model model){
@@ -69,20 +61,17 @@ public class AccessController {
     }
 
     // Post
-    @PostMapping("/login")
-    public String login(@RequestParam("email") String email, @RequestParam("password") String password){
+    @PostMapping("/userLogin")
+    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password){
 
-        try {
-
-            if (RDS.findRegisteredUserAccount(email, password))
-                return "redirect:/"; // Login Successful
-            else
-                return "redirect:/login_page"; // TODO: Add error message
-        } catch (Exception exp){
-            //
+        if (RDS.findRegisteredUserAccount(email.toLowerCase(), password))
+        {
+            User u = RDS.findRegisteredUserAccount(email.toLowerCase());
+            RDS.setSessionAttr("user",u);
+            return "redirect:/"; // TODO: filter which user is login in to redirect them to the correct url
         }
-
-        return "redirect:/login_page"; // TODO: Add error message
+        else
+            return "redirect:/login"; // TODO: Implement error exception or message to login
     }
 
     @PostMapping("/register")
@@ -122,6 +111,15 @@ public class AccessController {
         }
 
         return "redirect:/profile"; // TODO: Add error message
+    }
+
+    @RequestMapping("/logout")
+    public ModelAndView logOut(){
+        if (!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        RDS.logOut();
+        return new ModelAndView("redirect:/login");
     }
 
     // TODO: Add edit posts and Upload Photo
