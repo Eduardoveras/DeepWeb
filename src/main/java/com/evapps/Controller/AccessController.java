@@ -28,7 +28,7 @@ public class AccessController {
     // Gets
     @RequestMapping("/login")
     public ModelAndView fetchLoginView(){
-        return new ModelAndView("/users/login_register");
+        return new ModelAndView("/Backend/users/login_register");
     }
 
 
@@ -68,7 +68,7 @@ public class AccessController {
         {
             User u = RDS.findRegisteredUserAccount(email.toLowerCase());
             RDS.setSessionAttr("user",u);
-            return "redirect:/"; // TODO: filter which user is login in to redirect them to the correct url
+            return "redirect:/admin"; // TODO: filter which user is login in to redirect them to the correct url
         }
         else
             return "redirect:/login"; // TODO: Implement error exception or message to login

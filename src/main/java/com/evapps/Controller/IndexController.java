@@ -22,7 +22,7 @@ public class IndexController {
     private ReadDataService DQS;
 
     // Gets
-    @GetMapping("/")
+    @GetMapping("/admin")
     public ModelAndView index(Model model){
         if (!DQS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
@@ -37,6 +37,7 @@ public class IndexController {
         else
             model.addAttribute("isAdmin", true);
 
-        return new ModelAndView("homepage/index");
+        return new ModelAndView("/Backend/homepage/index");
     }
+
 }
