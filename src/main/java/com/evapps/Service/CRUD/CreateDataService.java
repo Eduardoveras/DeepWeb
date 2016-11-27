@@ -11,6 +11,7 @@ import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
+import com.evapps.Service.Auxiliary.EncryptionService;
 import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import freemarker.template.utility.NullArgumentException;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
+import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -33,6 +35,8 @@ public class CreateDataService
     private ReceiptRepository receiptRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EncryptionService encryptionService;
 
     // Product Creation
     public Product registerNewProduct(String productName, String supplier, String productDescription, Float productPrice, Integer productInStock) throws Exception{
@@ -95,7 +99,7 @@ public class CreateDataService
             throw new IllegalArgumentException("This user Account already exist");
 
         try {
-            User user = userRepository.save(new User(email, firstName, lastName, password, shippingAddress, permission));
+            User user = userRepository.save(new User(email, firstName, lastName, encryptionService.encryptPassword(password), shippingAddress, permission));
             historyRepository.save(new History(user)); // Creating the users history
             return user;
         } catch (PersistenceException exp){

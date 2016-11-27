@@ -58,7 +58,7 @@ public class ReadDataService {
     public User findRegisteredUserAccount(String email) { return userRepository.findByEmail(email); } // Used for profiles
 
     public boolean findRegisteredUserAccount(String email, String password) {
-        User user = userRepository.findUserAccountWithUsernameAndPassword(email, password);
+        User user = userRepository.findUserAccountWithUsernameAndPassword(email, EncriptService.encryptPassword(password));
         return (user != null);
     }
 
