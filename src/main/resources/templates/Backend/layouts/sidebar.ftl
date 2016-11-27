@@ -26,19 +26,9 @@
                 <br>
                 <h3><@spring.message "menu" /></h3>
                 <ul class="nav side-menu">
-
-                    <li><a href="/"><i  class="fa fa-plus-square-o"></i> <@spring.message "dashboard" /> <span ></span></a></li>
-                    <li><a href="/patients" ><i class="fa fa-user-md"></i> <@spring.message "patients" />  <span ></span></a></li>
-                    <li><a href="/appointments"><i  class="fa fa-desktop"></i> <@spring.message "appointments" />  <span ></span></a></li>
-                    <#if isAdmin><li><a  href="/users"><i class="fa fa-users"></i> <@spring.message "users" /><span></span></a></li></#if>
-                    <li><a><i class="fa fa-comments-o"></i> <@spring.message "team" /> <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="/contacts"><@spring.message "contacts" /></a></li>
-                            <li><a href="/meetings"><@spring.message "meetings" /></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/Inventory"><i  class="fa fa-calculator"></i> <@spring.message "inventory" /> <span ></span></a></li>
-                    <li><a  href="/Stats"><i class="fa fa-bar-chart-o"></i> <@spring.message "statistics" /><span></span></a></li>
+                    <li><a href="/admin/"><i  class="fa fa-plus-square-o"></i> <@spring.message "dashboard" /> <span ></span></a></li>
+                    <li><a href="/admin/products" ><i class="fa fa-shopping-basket"></i> <@spring.message "products" />  <span ></span></a></li>
+                    <li><a href="/admin/users" ><i class="fa fa-user-md"></i> <@spring.message "users" />  <span ></span></a></li>
                 </ul>
             </div>
         </div>
