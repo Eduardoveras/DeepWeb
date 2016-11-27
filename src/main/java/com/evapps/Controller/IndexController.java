@@ -37,7 +37,7 @@ public class IndexController {
         else
             model.addAttribute("isAdmin", true);
 
-        return new ModelAndView("homepage/index");
+        return new ModelAndView("/Backend/homepage/index");
     }
 
 }

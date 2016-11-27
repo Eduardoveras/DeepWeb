@@ -28,7 +28,7 @@ public class AccessController {
     // Gets
     @RequestMapping("/login")
     public ModelAndView fetchLoginView(){
-        return new ModelAndView("/users/login_register");
+        return new ModelAndView("/Backend/users/login_register");
     }
 
 

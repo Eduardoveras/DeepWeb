@@ -1,8 +1,12 @@
 package com.evapps.Controller;
 
+import com.evapps.Service.CRUD.ReadDataService;
+import com.evapps.Service.CRUD.UpdateDataService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -10,11 +14,21 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class StoreFrontController {
+    // Services
+    @Autowired
+    private ReadDataService RDS;
+    @Autowired
+    private UpdateDataService UDS;
 
 
     // Gets
     @GetMapping("/")
-    public ModelAndView storeFront(Model model){
+    public ModelAndView storeFront(Model model)
+    {
+
+        // TODO: Use current logged in users email
+        //model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(email).getShoppingCart());
+        model.addAttribute("selection", RDS.findAllRegisteredProducts());
         return new ModelAndView("StoreFront/index");
     }
 
@@ -38,8 +52,10 @@ public class StoreFrontController {
         return new ModelAndView("StoreFront/product");
     }
 
-    @GetMapping("/product-detail")
-    public ModelAndView product(Model model){
+    @GetMapping("/product-detail/{id}")
+    public ModelAndView product(Model model,@PathVariable("id") Integer productId)
+    {
+        model.addAttribute("item", RDS.findRegisteredProduct(productId));
         return new ModelAndView("StoreFront/product-detail");
     }
 }
