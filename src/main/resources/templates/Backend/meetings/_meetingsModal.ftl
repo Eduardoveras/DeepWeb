@@ -28,7 +28,7 @@
 
                 <div class="x_content">
                     <br/>
-                <#include "/templates/Backend/meetings/meetingForms/_newMeeting.ftl">
+                <#include "/Backend/meetings/meetingForms/_newMeeting.ftl">
                 </div>
             </div>
         </div>

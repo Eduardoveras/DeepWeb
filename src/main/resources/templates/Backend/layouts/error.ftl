@@ -1,4 +1,4 @@
-<#include "/templates/Backend/layouts/header.ftl">
+<#include "/Backend/layouts/header.ftl">
 
 <body class="nav-md">
 <div class="container body">

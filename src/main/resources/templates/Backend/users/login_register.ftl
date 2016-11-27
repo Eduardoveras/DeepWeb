@@ -1,4 +1,4 @@
-<#include "/templates/Backend/layouts/header.ftl">
+<#include "/Backend/layouts/header.ftl">
 
 
 <body class="login">
@@ -80,6 +80,6 @@
         </div>
     </div>
 </div>
-<#include "/templates/Backend/layouts/footer.ftl">
+<#include "/Backend/layouts/footer.ftl">
 </body>
 </html>

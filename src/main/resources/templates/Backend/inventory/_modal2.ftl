@@ -23,7 +23,7 @@
 
                 <div class="x_content">
                     <br/>
-                <#include "/templates/Backend/inventory/modalForms/_medicationForm.ftl">
+                <#include "/Backend/inventory/modalForms/_medicationForm.ftl">
                 </div>
             </div>
         </div>

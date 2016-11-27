@@ -24,7 +24,7 @@
 
                 <div class="x_content">
                     <br/>
-                    <#include "/templates/Backend/inventory/modalForms/_equipmentForm.ftl">
+                    <#include "/Backend/inventory/modalForms/_equipmentForm.ftl">
                 </div>
             </div>
         </div>

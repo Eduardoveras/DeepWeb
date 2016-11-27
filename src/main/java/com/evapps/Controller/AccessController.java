@@ -26,7 +26,7 @@ public class AccessController {
     private UpdateDataService URS;
 
     // Gets
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public ModelAndView fetchLoginView(){
         return new ModelAndView("/Backend/users/login_register");
     }
