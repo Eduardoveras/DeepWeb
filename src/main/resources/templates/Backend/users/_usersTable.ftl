@@ -8,21 +8,21 @@
             <table id="datatable-responsive" class="table table-hover table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th><span style="text-transform: uppercase;"><@spring.message "idFrag1" /> ${user.clinic.clinicPrefix} <@spring.message "idFrag2" /></span></th>
+                    <th><span style="text-transform: uppercase;"><@spring.message "ID" /></span></th>
                     <th><span style="text-transform: uppercase;"><@spring.message "name" /></span></th>
-                    <th><span style="text-transform: uppercase;"><@spring.message "email" /></span></th>
                     <th><span style="text-transform: uppercase;"><@spring.message "role" /></span></th>
-                    <th><span style="text-transform: uppercase;"><@spring.message "bday" /></span></th>
+                    <th><span style="text-transform: uppercase;"><@spring.message "address" /></span></th>
+                    <th><span style="text-transform: uppercase;"><@spring.message "status" /></span></th>
                 </tr>
                 </thead>
                 <tbody>
                 <#list userList?sort_by("email") as user>
                 <tr>
-                    <td>${user.userId}</td>
-                    <td>${user.fullName}</td>
-                    <td>${user.email}</td>
-                    <td>${user.role}</td>
-                    <td>${user.birthDate}</td>
+                    <td>${user.getEmail()}</td>
+                    <td>${user.getFullName()}</td>
+                    <td>${user.getRole()}</td>
+                    <td>${user.getShippingAddress()}</td>
+                    <td>${user.getStatus()}</td>
                 </tr>
                 <#else>
                 <tr>

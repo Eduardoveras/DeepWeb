@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <div style="display: inline-block;">
-                                        <h4><@spring.message "idFrag1" /> ${user.clinic.clinicPrefix} <@spring.message "idFrag2" />:</h4><h3>${user.getUserId()} </h3><br>
+                                        <h4><@spring.message "idFrag1" /> ${user.clinic.clinicPrefix} <@spring.message "ID" />:</h4><h3>${user.getUserId()} </h3><br>
                                         <h4><@spring.message "first" />:</h4><h3 style="text-transform: uppercase;">${user.getFirstName()} </h3><br>
                                         <h4><@spring.message "last" />:</h4><h3>${user.getLastName()}</h3><br>
                                         <h4><@spring.message "bday" />:</h4><h3>${user.getBirthDate()}</h3><br>

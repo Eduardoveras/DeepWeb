@@ -7,6 +7,7 @@ import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
+import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,13 +27,23 @@ public class AdminController {
     private DeleteDataService DDS;
 
     // Gets
-    @GetMapping("/dashboard")
-    public ModelAndView home(Model model){
 
-        return new ModelAndView("");
+    // Gets
+    @GetMapping("/admin")
+    public ModelAndView index(Model model){
+        if (!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+        model.addAttribute("userRole",RDS.getCurrentLoggedUser().getRole());
+        model.addAttribute("user",RDS.getSessionAttr("user"));
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            model.addAttribute("isAdmin", false);
+        else
+            model.addAttribute("isAdmin", true);
+
+        return new ModelAndView("/Backend/homepage/index");
     }
 
-    @GetMapping("/inventory")
+    @GetMapping("/admin/inventory")
     public ModelAndView viewInventory(Model model){
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
@@ -40,15 +51,20 @@ public class AdminController {
         return new ModelAndView("");
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public ModelAndView viewUsers(Model model){
+        if (!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
 
-        model.addAttribute("users", RDS.findAllRegisteredAccounts());
+        System.out.println("EL MALDITO SWAG");
+        model.addAttribute("userList", RDS.findAllRegisteredAccounts());
 
-        return new ModelAndView("");
+        return new ModelAndView("Backend/users/allUsers");
     }
 
-    @GetMapping("/transactions")
+
+
+    @GetMapping("/admin/transactions")
     public ModelAndView viewTransactions(Model model){
 
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
