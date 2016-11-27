@@ -62,13 +62,13 @@ public class AccessController {
 
     // Post
     @PostMapping("/userLogin")
-    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password){
+    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password,@RequestParam("origin") String origin){
 
         if (RDS.findRegisteredUserAccount(email.toLowerCase(), password))
         {
             User u = RDS.findRegisteredUserAccount(email.toLowerCase());
             RDS.setSessionAttr("user",u);
-            return "redirect:/admin"; // TODO: filter which user is login in to redirect them to the correct url
+            return "redirect:"+origin; // TODO: filter which user is login in to redirect them to the correct url
         }
         else
             return "redirect:/login"; // TODO: Implement error exception or message to login
@@ -116,10 +116,19 @@ public class AccessController {
     @RequestMapping("/logout")
     public ModelAndView logOut(){
         if (!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
+            return new ModelAndView("redirect:/");
 
         RDS.logOut();
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/");
+    }
+
+    @PostMapping("/logout")
+    public ModelAndView logOut2(@RequestParam("origin") String origin){
+        if (!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/");
+
+        RDS.logOut();
+        return new ModelAndView("redirect:/");
     }
 
     // TODO: Add edit posts and Upload Photo

@@ -29,11 +29,12 @@
               <div class="col-md-6">
                 <div class="aa-myaccount-login">
                 <h4>Login</h4>
-                 <form action="" class="aa-login-form">
+                 <form METHOD="POST" enctype="multipart/form-data" action="/userLogin" class="aa-login-form">
                   <label for="">Username or Email address<span>*</span></label>
-                   <input type="text" placeholder="Username or email">
+                   <input type="text" name="email" placeholder="Username or email">
+                     <input type="hidden" name="origin" value="/">
                    <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
+                    <input type="password" name="password" placeholder="Password">
                     <button type="submit" class="aa-browse-btn">Login</button>
                     <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
                     <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
@@ -43,11 +44,12 @@
               <div class="col-md-6">
                 <div class="aa-myaccount-register">                 
                  <h4>Register</h4>
-                 <form action="" class="aa-login-form">
+                 <form METHOD="POST" enctype="multipart/form-data" action="/newUser" class="aa-login-form">
                     <label for="">Username or Email address<span>*</span></label>
-                    <input type="text" placeholder="Username or email">
+                    <input type="text" name="email" placeholder="Username or email">
+                     <input type="hidden" name="origin" value="/">
                     <label for="">Password<span>*</span></label>
-                    <input type="password" placeholder="Password">
+                    <input type="password" name="password" placeholder="Password">
                     <button type="submit" class="aa-browse-btn">Register</button>                    
                   </form>
                 </div>

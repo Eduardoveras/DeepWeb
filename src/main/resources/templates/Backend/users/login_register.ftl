@@ -14,6 +14,7 @@
                     <h1><@spring.message "logIn" /></h1>
                     <div>
                         <input type="email" class="form-control" name="email" id="email" placeholder="<@spring.message "email" />" required="" />
+                        <input type="hidden" name="origin" value="/admin">
                     </div>
                     <div>
                         <input type="password" class="form-control" name="password" id="password" placeholder="<@spring.message "password" />" required="" />

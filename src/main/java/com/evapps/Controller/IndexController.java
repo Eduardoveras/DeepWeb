@@ -26,12 +26,8 @@ public class IndexController {
     public ModelAndView index(Model model){
         if (!DQS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
-        
         model.addAttribute("userRole",DQS.getCurrentLoggedUser().getRole());
-
-        
         model.addAttribute("user",DQS.getSessionAttr("user"));
-
         if (DQS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             model.addAttribute("isAdmin", false);
         else

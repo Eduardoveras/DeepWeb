@@ -25,8 +25,8 @@ public class StoreFrontController {
     @GetMapping("/")
     public ModelAndView storeFront(Model model)
     {
-
         // TODO: Use current logged in users email
+        model.addAttribute("user",RDS.getCurrentLoggedUser());
         //model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(email).getShoppingCart());
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
         return new ModelAndView("StoreFront/index");
