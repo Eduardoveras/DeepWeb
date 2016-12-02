@@ -157,6 +157,28 @@ public class AdminController {
     }
 
     // TODO: restockProduct
+    @PostMapping("/restock/{productId}")
+    public String restockProduct(@PathParam("productId") Integer productId, @RequestParam("addition") Integer addition){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            Product product = RDS.findRegisteredProduct(productId);
+            product.setProductInStock(product.getProductInStock() + addition); // Addition can be positive or negative
+            UDS.updateRegisteredProduct(product);
+
+            return "redirect:/admin/inventory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/inventory"; // TODO: Add error handling
+    }
+
     // TODO: uploadProductImage
     // TODO: emailUser
     // TODO: suspendUserAccount
