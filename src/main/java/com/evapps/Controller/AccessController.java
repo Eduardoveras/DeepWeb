@@ -13,7 +13,6 @@ import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
-import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -165,7 +164,7 @@ public class AccessController {
         return new ModelAndView("redirect:/");
     }
 
-    // TODO: Add edit posts and Upload Photo
+                                                                                                // TODO: Add edit posts and Upload Photo
 
     @PostMapping("/remove/{productId}")
     public String removeFromCart(@PathParam("productId") Integer productId){
@@ -181,7 +180,7 @@ public class AccessController {
             shoppingCart.remove(product);
             history.setShoppingCart(shoppingCart);
 
-            UDS.updareRegisteredUserHistory(history);
+            UDS.updateRegisteredUserHistory(history);
 
             return "redirect:/myHistory";
         } catch (Exception exp){
@@ -200,7 +199,7 @@ public class AccessController {
         try {
             History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
             history.setShoppingCart(new HashSet<>());
-            UDS.updareRegisteredUserHistory(history);
+            UDS.updateRegisteredUserHistory(history);
 
             return "redirect:/myHistory";
         } catch (Exception exp){
@@ -210,7 +209,6 @@ public class AccessController {
         return "redirect:/myHistory"; // TODO: Add error message
     }
 
-    // TODO: CancelTransaction
     @PostMapping("/cancel/{fiscalCode}")
     public String cancelTransaction(@PathParam("fiscalCode") String fiscalCode){
 
@@ -231,6 +229,28 @@ public class AccessController {
         return "redirect:/myHistory"; // TODO: Add error message
     }
 
-    // TODO: MarkTransactionAsReceived
-    // TODO: PrintTransaction
+    @PostMapping("/received/{fiscalCode}")
+    public String markTransactionAsReceived(@PathParam("fiscalCode") String fiscalCode){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        // Only shipped items can be received
+        if (RDS.findRegisteredTransaction(fiscalCode).getStatus() != OrderStatus.SHIPPING)
+            return "redirect:/myHistory"; // TODO: Add error message
+
+        try {
+            Receipt receipt = RDS.findRegisteredTransaction(fiscalCode);
+            receipt.setStatus(OrderStatus.DELIVERED);
+            UDS.updateRegisteredUserTransaction(receipt);
+
+            return "redirect:/myHistory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/myHistory"; // TODO: Add error message
+    }
+
+                                                                                                // TODO: PrintTransaction
 }
