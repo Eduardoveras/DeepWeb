@@ -1,5 +1,6 @@
 package com.evapps.Controller;
 
+import com.evapps.Entity.Product;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashSet;
 
 /**
  * Created by Eduardo veras on 27-Nov-16.
@@ -24,9 +27,13 @@ public class StoreFrontController {
     @GetMapping("/")
     public ModelAndView storeFront(Model model) {
 
-        // TODO: Use current logged in users email
-        model.addAttribute("user",RDS.getCurrentLoggedUser());
-        //model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(email).getShoppingCart());
+        model.addAttribute("user", RDS.getCurrentLoggedUser());
+
+        if(RDS.getCurrentLoggedUser() != null)
+            model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        else
+            model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
+
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
 
         return new ModelAndView("StoreFront/index");

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AdminController {
+
     // Services
     @Autowired
     private CreateDataService CDS;
@@ -33,8 +34,8 @@ public class AdminController {
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        model.addAttribute("userRole",RDS.getCurrentLoggedUser().getRole());
-        model.addAttribute("user",RDS.getSessionAttr("user"));
+        model.addAttribute("userRole", RDS.getCurrentLoggedUser().getRole());
+        model.addAttribute("user", RDS.getSessionAttr("user"));
 
         if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             model.addAttribute("isAdmin", false);
