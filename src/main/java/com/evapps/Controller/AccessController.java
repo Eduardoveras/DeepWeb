@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
@@ -162,6 +163,7 @@ public class AccessController {
 
     @PostMapping("/logout")
     public ModelAndView logOut2(@RequestParam("origin") String origin){
+
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
@@ -169,7 +171,26 @@ public class AccessController {
         return new ModelAndView("redirect:/");
     }
 
-                                                                                                // TODO: Add edit posts and Upload Photo
+                                                                                                // TODO: Add edit posts
+
+    @PostMapping("/upload/user_picture")
+    public String uploadUserProfilePicture(@RequestParam("email") String email, @RequestParam("file") MultipartFile picture){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        try {
+            User user = RDS.findRegisteredUserAccount(email);
+            user.setPhoto(processImageFile(picture.getBytes()));
+            UDS.updateRegisteredUserAccount(user);
+
+            return "redirect:/profile";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/profile"; // TODO: Add error message
+    }
 
     @PostMapping("/remove/{productId}")
     public String removeFromCart(@PathParam("productId") Integer productId){
@@ -258,4 +279,16 @@ public class AccessController {
     }
 
                                                                                                 // TODO: PrintTransaction
+
+    // Auxiliary Functions
+    private Byte[] processImageFile(byte[] buffer) {
+        Byte[] bytes = new Byte[buffer.length];
+        int i = 0;
+
+        for (byte b :
+                buffer)
+            bytes[i++] = b; // Autoboxing
+
+        return bytes;
+    }
 }

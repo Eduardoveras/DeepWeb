@@ -219,7 +219,7 @@ public class AdminController {
 
         try {
             Product product = RDS.findRegisteredProduct(productId);
-            product.setPhoto(procesImageFile(picture.getBytes()));
+            product.setPhoto(processImageFile(picture.getBytes()));
             UDS.updateRegisteredProduct(product);
 
             return "redirect:/admin/inventory";
@@ -306,7 +306,7 @@ public class AdminController {
                                                                                                     // TODO: downloadReport
 
     // Auxiliary Functions
-    private Byte[] procesImageFile(byte[] buffer) {
+    private Byte[] processImageFile(byte[] buffer) {
         Byte[] bytes = new Byte[buffer.length];
         int i = 0;
 
