@@ -103,6 +103,9 @@ public class AdminController {
 
         try {
             CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress, password, role);
+
+            // TODO: Send confirmation email
+
             return "redirect:/admin/users";
         } catch (Exception exp){
             //

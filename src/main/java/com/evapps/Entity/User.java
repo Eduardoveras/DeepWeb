@@ -46,7 +46,7 @@ public class User implements Serializable{
         this.setShippingAddress(shippingAddress);
         this.setPassword(password);
         this.setRole(role);
-        this.setStatus(AccountStatus.ACTIVE);
+        this.setStatus(AccountStatus.SUSPENDED); // Changes once receive confirmation email
     }
 
     //Getters and Setters
