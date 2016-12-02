@@ -85,7 +85,22 @@ public class StoreFrontController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        model.addAttribute("item", RDS.findRegisteredProduct(productId));
+        Product product = RDS.findRegisteredProduct(productId);
+
+        model.addAttribute("item", product);
+
+        try {
+            History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
+            Set<Product> browsingHistory = history.getBrowsingHistory();
+
+            // Updating the browsing history
+            browsingHistory.add(product);
+            history.setBrowsingHistory(browsingHistory);
+
+            UDS.updateRegisteredUserHistory(history);
+        } catch (Exception exp){
+            //
+        }
 
         return new ModelAndView("StoreFront/product-detail");
     }
