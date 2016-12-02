@@ -30,7 +30,7 @@ public class User implements Serializable{
     private Permission role;
     @NotNull
     private AccountStatus status;
-    @Column(length = 500000)
+    @Column(length = 5000000)
     private Byte[] photo;
 
 
