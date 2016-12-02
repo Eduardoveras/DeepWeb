@@ -27,14 +27,15 @@ public class AdminController {
     private DeleteDataService DDS;
 
     // Gets
-
-    // Gets
     @GetMapping("/admin")
     public ModelAndView index(Model model){
+
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
+
         model.addAttribute("userRole",RDS.getCurrentLoggedUser().getRole());
         model.addAttribute("user",RDS.getSessionAttr("user"));
+
         if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             model.addAttribute("isAdmin", false);
         else
@@ -46,6 +47,9 @@ public class AdminController {
     @GetMapping("/admin/inventory")
     public ModelAndView viewInventory(Model model){
 
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
 
         return new ModelAndView("");
@@ -53,20 +57,21 @@ public class AdminController {
 
     @GetMapping("/admin/users")
     public ModelAndView viewUsers(Model model){
+
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        System.out.println("EL MALDITO SWAG");
         model.addAttribute("userList", RDS.findAllRegisteredAccounts());
 
         return new ModelAndView("Backend/users/allUsers");
     }
 
-
-
     @GetMapping("/admin/transactions")
     public ModelAndView viewTransactions(Model model){
 
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+        
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
 
         return new ModelAndView("");
