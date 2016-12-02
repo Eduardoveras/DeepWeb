@@ -5,10 +5,13 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
 import com.evapps.Service.CRUD.CreateDataService;
+import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
+import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,8 @@ public class AccessController {
     // Services
     @Autowired
     private CreateDataService CDS;
+    @Autowired
+    private DeleteDataService DDS;
     @Autowired
     private ReadDataService RDS;
     @Autowired
@@ -204,8 +209,28 @@ public class AccessController {
 
         return "redirect:/myHistory"; // TODO: Add error message
     }
-    
+
     // TODO: CancelTransaction
+    @PostMapping("/cancel/{fiscalCode}")
+    public String cancelTransaction(@PathParam("fiscalCode") String fiscalCode){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        // Only pending orders can be deleted, once shipped or received it can no longer be canceled
+        if (RDS.findRegisteredTransaction(fiscalCode).getStatus() != OrderStatus.PENDING)
+            return "redirect:/myHistory"; // TODO: Add error message
+
+        try {
+            DDS.deleteRegisteredPendingTransaction(fiscalCode);
+            return "redirect:/myHistory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/myHistory"; // TODO: Add error message
+    }
+
     // TODO: MarkTransactionAsReceived
     // TODO: PrintTransaction
 }

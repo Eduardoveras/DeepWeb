@@ -9,6 +9,7 @@ import com.evapps.Entity.Receipt;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
+import com.evapps.Tools.Enums.OrderStatus;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,9 @@ public class DeleteDataService {
     }
 
     public void deleteRegisteredPendingTransaction(String fiscalCode) throws Exception{
+
+        if (receiptRepository.findByFiscalCode(fiscalCode).getStatus() == OrderStatus.PENDING)
+            throw new IllegalArgumentException("This is an illegal action! You cannot delete a pending transaction");
 
         try {
             receiptRepository.delete(fiscalCode);
