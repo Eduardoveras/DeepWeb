@@ -223,6 +223,9 @@ public class AdminController {
             receipt.setStatus(OrderStatus.DELIVERED);
             UDS.updateRegisteredUserTransaction(receipt);
 
+            // TODO: send email to client
+            // TODO: Apply payment of transaction
+
             return "redirect:/admin/transactions";
         } catch (Exception exp){
             //
@@ -231,8 +234,6 @@ public class AdminController {
         return "redirect:/admin/transactions"; // TODO: Add error handling
     }
 
-
-    // TODO: uploadProductImage
     @PostMapping("/upload/product_picture/{productId}")
     public String uploadProductPicture(@PathParam("productId") Integer productId, @RequestParam("file") MultipartFile picture){
 

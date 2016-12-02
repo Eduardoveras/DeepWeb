@@ -144,12 +144,17 @@ public class StoreFrontController {
     @PostMapping("/one_click/quick_buy/{productId}")
     public String oneClickBuy(@PathParam("productId") Integer productId){
 
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
         try {
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
             list.add(product.getProductId());
 
             CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
+
+            // TODO: send email to admin to confirm transaction
 
             return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
         } catch (Exception exp){
