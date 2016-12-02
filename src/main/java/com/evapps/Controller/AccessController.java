@@ -23,7 +23,7 @@ public class AccessController {
     @Autowired
     private ReadDataService RDS;
     @Autowired
-    private UpdateDataService URS;
+    private UpdateDataService UDS;
 
     // Gets
     @GetMapping("/login")
@@ -123,7 +123,9 @@ public class AccessController {
             return "redirect:/profile"; // TODO: Add error message
 
         try {
-            // TODO: Change Current Users password
+            User user = RDS.findRegisteredUserAccount(RDS.getCurrentLoggedUser().getEmail());
+            user.setPassword(newPassword);
+            UDS.updateRegisteredUserAccount(user);
             return "redirect:/profile";
         } catch (Exception exp){
             //
