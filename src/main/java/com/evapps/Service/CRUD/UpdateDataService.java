@@ -5,9 +5,11 @@ package com.evapps.Service.CRUD;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
+import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +26,12 @@ public class UpdateDataService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
+    private ReceiptRepository receiptRepository;
+    @Autowired
     private UserRepository userRepository;
 
     // History Updates
-    public void updareRegisteredUserHistory(History history) throws Exception{
+    public void updateRegisteredUserHistory(History history) throws Exception{
 
         if (history == null)
             throw new NullArgumentException("This history is void");
@@ -49,6 +53,21 @@ public class UpdateDataService {
 
         try {
             productRepository.save(product);
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
+    // Receipt Updates
+    public void updateRegisteredUserTransaction(Receipt receipt) throws Exception{
+
+        if (receipt == null)
+            throw new NullArgumentException("This transaction is void");
+
+        try {
+            receiptRepository.save(receipt);
         } catch (PersistenceException exp){
             throw new PersistenceException("Persistence Error --> " + exp.getMessage());
         } catch (Exception exp){
