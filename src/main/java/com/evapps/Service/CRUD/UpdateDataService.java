@@ -26,6 +26,21 @@ public class UpdateDataService {
     @Autowired
     private UserRepository userRepository;
 
+    // History Updates
+    public void updareRegisteredUserHistory(History history) throws Exception{
+
+        if (history == null)
+            throw new NullArgumentException("This history is void");
+
+        try {
+            historyRepository.save(history);
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
     // Product Updates
     public void updateRegisteredProduct(Product product) throws Exception {
 
