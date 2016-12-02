@@ -124,7 +124,7 @@ public class AdminController {
             if (!productDescription.equals(""))
                 product.setProductDescription(productDescription);
 
-            if (productPrice != product.getProductPrice())
+            if (!productPrice.equals(product.getProductPrice()))
                 product.setProductPrice(productPrice);
 
             UDS.updateRegisteredProduct(product);
@@ -137,7 +137,25 @@ public class AdminController {
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    // TODO: deleteProduct
+    @PostMapping("/delete/product/{productId}")
+    public String deleteProduct(@PathParam("productId") Integer productId){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            DDS.deleteRegisteredProduct(productId);
+            return "redirect:/admin/inventory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/inventory"; // TODO: Add error handling
+    }
+
     // TODO: restockProduct
     // TODO: uploadProductImage
     // TODO: emailUser
