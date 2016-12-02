@@ -217,7 +217,33 @@ public class AdminController {
 
         try {
             User user = RDS.findRegisteredUserAccount(email);
+
+            if (user.getRole() != Permission.CONSUMER)
+                return "redirect:/admin/users"; // TODO: only individuals can be made admin
+
             user.setRole(Permission.ADMIN);
+            UDS.updateRegisteredUserAccount(user);
+
+            return "redirect:/admin/users";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/users"; // TODO: Add error handling
+    }
+
+    @PostMapping("/remove_admin_rights")
+    public String removeAdminRights(@RequestParam("email") String email){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            User user = RDS.findRegisteredUserAccount(email);
+            user.setRole(Permission.CONSUMER);
             UDS.updateRegisteredUserAccount(user);
 
             return "redirect:/admin/users";
