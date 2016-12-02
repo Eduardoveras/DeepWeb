@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
@@ -206,7 +207,29 @@ public class AdminController {
     }
 
 
-                                                                                                    // TODO: uploadProductImage
+    // TODO: uploadProductImage
+    @PostMapping("/upload/product_picture/{productId}")
+    public String uploadProductPicture(@PathParam("productId") Integer productId, @RequestParam("file") MultipartFile picture){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            Product product = RDS.findRegisteredProduct(productId);
+            product.setPhoto(procesImageFile(picture.getBytes()));
+            UDS.updateRegisteredProduct(product);
+
+            return "redirect:/admin/inventory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/inventory"; // TODO: Add error handling
+    }
+
                                                                                                     // TODO: emailUser
 
     @PostMapping("/suspend_user")
@@ -281,4 +304,16 @@ public class AdminController {
 
                                                                                                     // TODO: printTransaction
                                                                                                     // TODO: downloadReport
+
+    // Auxiliary Functions
+    private Byte[] procesImageFile(byte[] buffer) {
+        Byte[] bytes = new Byte[buffer.length];
+        int i = 0;
+
+        for (byte b :
+                buffer)
+            bytes[i++] = b; // Autoboxing
+
+        return bytes;
+    }
 }
