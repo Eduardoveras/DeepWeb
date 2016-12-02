@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -79,7 +81,25 @@ public class AdminController {
     }
 
     // Posts
-    // TODO: registerNewProduct
+    @PostMapping("/add_new_product")
+    public String registerNewProduct(@RequestParam("name") String productName, @RequestParam("supplier") String supplier, @RequestParam("description") String productDescription, @RequestParam("price") Float productPrice, @RequestParam("quantity") Integer productInStock){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            CDS.registerNewProduct(productName, supplier, productDescription, productPrice, productInStock);
+            return "redirect:/admin/inventory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/inventory";
+    }
+
     // TODO: editProduct
     // TODO: deleteProduct
     // TODO: restockProduct
