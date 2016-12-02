@@ -3,6 +3,7 @@
  */
 package com.evapps.Controller;
 
+import com.evapps.Entity.Product;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.websocket.server.PathParam;
 
 @Controller
 public class AdminController {
@@ -97,10 +100,43 @@ public class AdminController {
             //
         }
 
-        return "redirect:/admin/inventory";
+        return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    // TODO: editProduct
+    @PostMapping("/edit/product/{productId}")
+    public String editProductInformation(@PathParam("productId") Integer productId, @RequestParam("name") String productName, @RequestParam("supplier") String supplier, @RequestParam("description") String productDescription, @RequestParam("price") Float productPrice){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            Product product = RDS.findRegisteredProduct(productId);
+
+            if (!productName.equals(""))
+                product.setProductName(productName);
+
+            if (!supplier.equals(""))
+                product.setSupplier(supplier);
+
+            if (!productDescription.equals(""))
+                product.setProductDescription(productDescription);
+
+            if (productPrice != product.getProductPrice())
+                product.setProductPrice(productPrice);
+
+            UDS.updateRegisteredProduct(product);
+
+            return "redirect:/admin/inventory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/inventory"; // TODO: Add error handling
+    }
+
     // TODO: deleteProduct
     // TODO: restockProduct
     // TODO: uploadProductImage
