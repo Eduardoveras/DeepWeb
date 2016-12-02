@@ -1,5 +1,6 @@
 package com.evapps.Controller;
 
+import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -8,9 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.websocket.server.PathParam;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Eduardo veras on 27-Nov-16.
@@ -66,7 +70,7 @@ public class StoreFrontController {
         return new ModelAndView("StoreFront/checkout");
     }
 
-    @GetMapping("/product")
+    @GetMapping("/products")
     public ModelAndView productList(Model model){
 
         if(!RDS.isUserLoggedIn())
@@ -87,4 +91,34 @@ public class StoreFrontController {
     }
 
     // Posts
+    @PostMapping("/add_to_cart/{productId}")
+    public String addToCart(@PathParam("productId") Integer productId){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        try {
+            History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
+            Set<Product> shoppingCart = history.getShoppingCart();
+            Set<Product> browsingHistory = history.getBrowsingHistory();
+            Product product = RDS.findRegisteredProduct(productId);
+
+            // Adding to cart
+            shoppingCart.add(product);
+            history.setShoppingCart(shoppingCart);
+
+            // Updating the browsing history
+            browsingHistory.add(product);
+            history.setBrowsingHistory(browsingHistory);
+
+            UDS.updateRegisteredUserHistory(history);
+
+            return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/"; // TODO: Add error handling
+    }
+
 }
