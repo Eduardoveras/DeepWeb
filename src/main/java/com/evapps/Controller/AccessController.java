@@ -105,25 +105,6 @@ public class AccessController {
             return "redirect:/login"; // TODO: Implement error exception or message to login
     }
 
-    @PostMapping("/register")
-    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress, @RequestParam("password") String password, @RequestParam("confirm") String confirmPassword, @RequestParam("type") Permission role){
-
-        if(RDS.isUserLoggedIn()) // There is no need to log in if already logged in
-            return "redirect:/";
-
-        if (!password.equals(confirmPassword))
-            return "redirect:/register_page"; // TODO: Add error message
-
-        try {
-            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress, password, role);
-            return "redirect:/login_page";
-        } catch (Exception exp){
-            //
-        }
-
-        return "redirect:/register_page"; // TODO: Add error message
-    }
-
     @PostMapping("/user/change_password")
     public String changePassword(@RequestParam("old") String oldPassword, @RequestParam("new") String newPassword, @RequestParam("confirm") String confirmPassword){
 

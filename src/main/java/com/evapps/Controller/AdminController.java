@@ -89,6 +89,28 @@ public class AdminController {
     }
 
     // Posts
+    @PostMapping("/register")
+    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress, @RequestParam("password") String password, @RequestParam("confirm") String confirmPassword, @RequestParam("type") Permission role){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        if (!password.equals(confirmPassword))
+            return "redirect:/register_page"; // TODO: Add error message
+
+        try {
+            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress, password, role);
+            return "redirect:/admin/users";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/register_page"; // TODO: Add error message
+    }
+
     @PostMapping("/add_new_product")
     public String registerNewProduct(@RequestParam("name") String productName, @RequestParam("supplier") String supplier, @RequestParam("description") String productDescription, @RequestParam("price") Float productPrice, @RequestParam("quantity") Integer productInStock){
 
