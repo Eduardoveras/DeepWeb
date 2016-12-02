@@ -28,6 +28,10 @@ public class AccessController {
     // Gets
     @GetMapping("/login")
     public ModelAndView fetchLoginView(){
+
+        if(RDS.isUserLoggedIn()) // There is no need to log in if already logged in
+            return new ModelAndView("redirect:/");
+
         return new ModelAndView("/Backend/users/login_register");
     }
 
@@ -35,14 +39,19 @@ public class AccessController {
     @GetMapping("/profile")
     public ModelAndView viewProfile(Model model){
 
-        // TODO: Use current logged in users email
-        //model.addAttribute("user", RDS.findRegisteredUserAccount(email));
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        model.addAttribute("user", RDS.findRegisteredUserAccount(RDS.getCurrentLoggedUser().getEmail()));
 
         return new ModelAndView("");
     }
 
     @GetMapping("/myHistory")
     public ModelAndView viewHistory(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
 
         // TODO: Use current logged in users email
         // model.addAttribute("browsingHistory", RDS.findRegisteredUserHistory(email).getBrowsingHistory());
@@ -55,6 +64,9 @@ public class AccessController {
     @GetMapping("/transaction/{fiscalCode}")
     public ModelAndView viewTransaction(Model model, @PathVariable("fiscalCode") String fiscalCode){
 
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("transaction", RDS.findRegisteredTransaction(fiscalCode));
 
         return new ModelAndView("");
@@ -62,13 +74,13 @@ public class AccessController {
 
     // Post
     @PostMapping("/userLogin")
-    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password,@RequestParam("origin") String origin){
+    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("origin") String origin){
 
         if (RDS.findRegisteredUserAccount(email.toLowerCase(), password))
         {
             User u = RDS.findRegisteredUserAccount(email.toLowerCase());
             RDS.setSessionAttr("user",u);
-            return "redirect:"+origin; // TODO: filter which user is login in to redirect them to the correct url
+            return "redirect:" + origin;
         }
         else
             return "redirect:/login"; // TODO: Implement error exception or message to login
