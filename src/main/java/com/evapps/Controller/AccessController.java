@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
+import java.util.HashSet;
 import java.util.Set;
 
 @Controller
@@ -184,8 +185,26 @@ public class AccessController {
 
         return "redirect:/myHistory"; // TODO: Add error message
     }
+
+    @PostMapping("/clear")
+    public String clearCart(){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        try {
+            History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
+            history.setShoppingCart(new HashSet<>());
+            UDS.updareRegisteredUserHistory(history);
+
+            return "redirect:/myHistory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/myHistory"; // TODO: Add error message
+    }
     
-    // TODO: ClearCart
     // TODO: CancelTransaction
     // TODO: MarkTransactionAsReceived
     // TODO: PrintTransaction
