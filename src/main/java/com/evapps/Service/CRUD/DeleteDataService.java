@@ -5,8 +5,10 @@ package com.evapps.Service.CRUD;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
+import com.evapps.Repository.ReceiptRepository;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class DeleteDataService {
     private HistoryRepository historyRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ReceiptRepository receiptRepository;
 
     // Deletes
     public void deleteRegisteredProduct(Integer productId) throws Exception{
@@ -51,6 +55,19 @@ public class DeleteDataService {
 
             // Deleting Product
             productRepository.delete(product);
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (NullArgumentException exp){
+            throw new NullArgumentException("Null Argument Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
+    public void deleteRegisteredPendingTransaction(String fiscalCode) throws Exception{
+
+        try {
+            receiptRepository.delete(fiscalCode);
         } catch (PersistenceException exp){
             throw new PersistenceException("Persistence Error --> " + exp.getMessage());
         } catch (NullArgumentException exp){
