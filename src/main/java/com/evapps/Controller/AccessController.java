@@ -11,6 +11,7 @@ import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
+import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +93,11 @@ public class AccessController {
         if (RDS.findRegisteredUserAccount(email.toLowerCase(), password))
         {
             User u = RDS.findRegisteredUserAccount(email.toLowerCase());
-            RDS.setSessionAttr("user",u);
+
+            if (u.getStatus() == AccountStatus.SUSPENDED)
+                return "redirect:/login"; // TODO: Implement "You have been blocked" message
+
+            RDS.setSessionAttr("user", u);
             return "redirect:" + origin;
         }
         else
