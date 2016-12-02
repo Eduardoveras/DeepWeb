@@ -20,42 +20,65 @@ public class StoreFrontController {
     @Autowired
     private UpdateDataService UDS;
 
-
     // Gets
     @GetMapping("/")
-    public ModelAndView storeFront(Model model)
-    {
+    public ModelAndView storeFront(Model model) {
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         // TODO: Use current logged in users email
         model.addAttribute("user",RDS.getCurrentLoggedUser());
         //model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(email).getShoppingCart());
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
+
         return new ModelAndView("StoreFront/index");
     }
 
     @GetMapping("/account")
     public ModelAndView account(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         return new ModelAndView("StoreFront/account");
     }
 
     @GetMapping("/cart")
     public ModelAndView cart(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         return new ModelAndView("StoreFront/cart");
     }
 
     @GetMapping("/checkout")
     public ModelAndView checkout(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         return new ModelAndView("StoreFront/checkout");
     }
 
     @GetMapping("/product")
     public ModelAndView productList(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         return new ModelAndView("StoreFront/product");
     }
 
     @GetMapping("/product-detail/{id}")
-    public ModelAndView product(Model model,@PathVariable("id") Integer productId)
-    {
+    public ModelAndView product(Model model, @PathVariable("id") Integer productId) {
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("item", RDS.findRegisteredProduct(productId));
+
         return new ModelAndView("StoreFront/product-detail");
     }
 }

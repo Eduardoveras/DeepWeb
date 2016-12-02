@@ -71,7 +71,7 @@ public class AdminController {
 
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
-        
+
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
 
         return new ModelAndView("");
