@@ -183,7 +183,7 @@ public class AdminController {
 
                                                                                                     // TODO: uploadProductImage
                                                                                                     // TODO: emailUser
-    // TODO: suspendUserAccount
+
     @PostMapping("/suspend_user")
     public String suspendUserAccount(@RequestParam("email") String email){
 
@@ -206,7 +206,28 @@ public class AdminController {
         return "redirect:/admin/users"; // TODO: Add error handling
     }
 
-    // TODO: makeAdmin
-    // TODO: printTransaction
-    // TODO: downloadReport
+    @PostMapping("/make_admin")
+    public String makeUserAdmin(@RequestParam("email") String email){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            User user = RDS.findRegisteredUserAccount(email);
+            user.setRole(Permission.ADMIN);
+            UDS.updateRegisteredUserAccount(user);
+
+            return "redirect:/admin/users";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/users"; // TODO: Add error handling
+    }
+
+                                                                                                    // TODO: printTransaction
+                                                                                                    // TODO: downloadReport
 }
