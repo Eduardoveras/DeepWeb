@@ -24,9 +24,6 @@ public class StoreFrontController {
     @GetMapping("/")
     public ModelAndView storeFront(Model model) {
 
-        if(!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
-
         // TODO: Use current logged in users email
         model.addAttribute("user",RDS.getCurrentLoggedUser());
         //model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(email).getShoppingCart());
@@ -81,4 +78,6 @@ public class StoreFrontController {
 
         return new ModelAndView("StoreFront/product-detail");
     }
+
+    // Posts
 }

@@ -53,10 +53,9 @@ public class AccessController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        // TODO: Use current logged in users email
-        // model.addAttribute("browsingHistory", RDS.findRegisteredUserHistory(email).getBrowsingHistory());
-        //model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(email).getShoppingCart());
-        //model.addAttribute("transactions", RDS.findRegisteredUserTransactions(email));
+        model.addAttribute("browsingHistory", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getBrowsingHistory());
+        model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        model.addAttribute("transactions", RDS.findRegisteredUserTransactions(RDS.getCurrentLoggedUser().getEmail()));
 
         return new ModelAndView("");
     }
@@ -99,7 +98,7 @@ public class AccessController {
             return "redirect:/register_page"; // TODO: Add error message
 
         try {
-            CDS.registerNewUser(email, firstName, lastName, shippingAddress, password, role);
+            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress, password, role);
             return "redirect:/login_page";
         } catch (Exception exp){
             //
@@ -114,9 +113,8 @@ public class AccessController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
-        // TODO: Get Current User that is logged in
-        //if (!RDS.findRegisteredUserAccount(email, password))
-          //  return "redirect:/profile"; // TODO: Add error message
+        if (!RDS.findRegisteredUserAccount(RDS.getCurrentLoggedUser().getEmail(), oldPassword))
+            return "redirect:/profile"; // TODO: Add error message
 
         if (oldPassword.equals(newPassword))
             return "redirect:/profile"; // TODO: Add error message
