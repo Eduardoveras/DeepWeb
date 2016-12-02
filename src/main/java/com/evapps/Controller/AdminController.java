@@ -4,10 +4,12 @@
 package com.evapps.Controller;
 
 import com.evapps.Entity.Product;
+import com.evapps.Entity.User;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
+import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -179,9 +181,31 @@ public class AdminController {
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    // TODO: uploadProductImage
-    // TODO: emailUser
+                                                                                                    // TODO: uploadProductImage
+                                                                                                    // TODO: emailUser
     // TODO: suspendUserAccount
+    @PostMapping("/suspend_user")
+    public String suspendUserAccount(@RequestParam("email") String email){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            User user = RDS.findRegisteredUserAccount(email);
+            user.setStatus(AccountStatus.SUSPENDED);
+            UDS.updateRegisteredUserAccount(user);
+
+            return "redirect:/admin/users";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/users"; // TODO: Add error handling
+    }
+
     // TODO: makeAdmin
     // TODO: printTransaction
     // TODO: downloadReport
