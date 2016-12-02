@@ -76,6 +76,9 @@ public class AccessController {
     @PostMapping("/userLogin")
     public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, @RequestParam("origin") String origin){
 
+        if(RDS.isUserLoggedIn()) // There is no need to log in if already logged in
+            return "redirect:/";
+
         if (RDS.findRegisteredUserAccount(email.toLowerCase(), password))
         {
             User u = RDS.findRegisteredUserAccount(email.toLowerCase());
@@ -88,6 +91,9 @@ public class AccessController {
 
     @PostMapping("/register")
     public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress, @RequestParam("password") String password, @RequestParam("confirm") String confirmPassword, @RequestParam("type") Permission role){
+
+        if(RDS.isUserLoggedIn()) // There is no need to log in if already logged in
+            return "redirect:/";
 
         if (!password.equals(confirmPassword))
             return "redirect:/register_page"; // TODO: Add error message
@@ -104,6 +110,9 @@ public class AccessController {
 
     @PostMapping("/user/change_password")
     public String changePassword(@RequestParam("old") String oldPassword, @RequestParam("new") String newPassword, @RequestParam("confirm") String confirmPassword){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
 
         // TODO: Get Current User that is logged in
         //if (!RDS.findRegisteredUserAccount(email, password))
@@ -128,7 +137,7 @@ public class AccessController {
     @RequestMapping("/logout")
     public ModelAndView logOut(){
         if (!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/login");
 
         RDS.logOut();
         return new ModelAndView("redirect:/");
@@ -137,7 +146,7 @@ public class AccessController {
     @PostMapping("/logout")
     public ModelAndView logOut2(@RequestParam("origin") String origin){
         if (!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/login");
 
         RDS.logOut();
         return new ModelAndView("redirect:/");
