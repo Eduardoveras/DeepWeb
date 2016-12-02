@@ -2,6 +2,7 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +25,8 @@ import java.util.Set;
 @Controller
 public class StoreFrontController {
     // Services
+    @Autowired
+    private CreateDataService CDS;
     @Autowired
     private ReadDataService RDS;
     @Autowired
@@ -127,6 +132,24 @@ public class StoreFrontController {
             history.setBrowsingHistory(browsingHistory);
 
             UDS.updateRegisteredUserHistory(history);
+
+            return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/"; // TODO: Add error handling
+    }
+
+    @PostMapping("/one_click/quick_buy/{productId}")
+    public String oneClickBuy(@PathParam("productId") Integer productId){
+
+        try {
+            Product product = RDS.findRegisteredProduct(productId);
+            ArrayList<Integer> list = new ArrayList<>();
+            list.add(product.getProductId());
+
+            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
 
             return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
         } catch (Exception exp){

@@ -13,7 +13,6 @@ import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
-import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -228,6 +227,9 @@ public class AccessController {
 
         try {
             DDS.deleteRegisteredPendingTransaction(fiscalCode);
+
+            // TODO: email admin of order cancelation
+
             return "redirect:/myHistory";
         } catch (Exception exp){
             //
