@@ -4,12 +4,14 @@
 package com.evapps.Controller;
 
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.AccountStatus;
+import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -180,6 +182,29 @@ public class AdminController {
 
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
+
+    @PostMapping("/ship/{fiscalCode}")
+    public String markOrderAsShipped(@PathParam("fiscalCode") String fiscalCode){
+
+        if(!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login"; // User must be an admin
+
+        try {
+            Receipt receipt = RDS.findRegisteredTransaction(fiscalCode);
+            receipt.setStatus(OrderStatus.DELIVERED);
+            UDS.updateRegisteredUserTransaction(receipt);
+
+            return "redirect:/admin/transactions";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/admin/transactions"; // TODO: Add error handling
+    }
+
 
                                                                                                     // TODO: uploadProductImage
                                                                                                     // TODO: emailUser
