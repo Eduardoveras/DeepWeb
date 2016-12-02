@@ -3,16 +3,22 @@
  */
 package com.evapps.Controller;
 
+import com.evapps.Entity.History;
+import com.evapps.Entity.Product;
 import com.evapps.Entity.User;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.Permission;
+import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.websocket.server.PathParam;
+import java.util.Set;
 
 @Controller
 public class AccessController {
@@ -126,6 +132,7 @@ public class AccessController {
             User user = RDS.findRegisteredUserAccount(RDS.getCurrentLoggedUser().getEmail());
             user.setPassword(newPassword);
             UDS.updateRegisteredUserAccount(user);
+
             return "redirect:/profile";
         } catch (Exception exp){
             //
@@ -154,7 +161,30 @@ public class AccessController {
 
     // TODO: Add edit posts and Upload Photo
 
-    // TODO: RemoveFromCart
+    @PostMapping("/remove/{productId}")
+    public String removeFromCart(@PathParam("productId") Integer productId){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        try {
+            History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
+            Set<Product> shoppingCart = history.getShoppingCart();
+            Product product = RDS.findRegisteredProduct(productId);
+
+            shoppingCart.remove(product);
+            history.setShoppingCart(shoppingCart);
+
+            UDS.updareRegisteredUserHistory(history);
+
+            return "redirect:/myHistory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/myHistory"; // TODO: Add error message
+    }
+    
     // TODO: ClearCart
     // TODO: CancelTransaction
     // TODO: MarkTransactionAsReceived
