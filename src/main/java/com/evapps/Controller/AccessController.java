@@ -189,14 +189,16 @@ public class AccessController {
 
             for (Product product:
                     shoppingCart) {
-                // Saving transaction registry
-                productList.add(product.getProductId());
-                // Calculating total cost of transaction
-                total += product.getProductPrice();
+                if (product.getProductInStock() > 0){
+                    // Saving transaction registry
+                    productList.add(product.getProductId());
+                    // Calculating total cost of transaction
+                    total += product.getProductPrice();
 
-                // Updating inventory
-                product.setProductInStock(product.getProductInStock() - 1);
-                UDS.updateRegisteredProduct(product);
+                    // Updating inventory
+                    product.setProductInStock(product.getProductInStock() - 1);
+                    UDS.updateRegisteredProduct(product);
+                }
             }
             
             history.setShoppingCart(new HashSet<>()); // Clearing Shopping cart
@@ -268,6 +270,15 @@ public class AccessController {
             return "redirect:/myHistory"; // TODO: Add error message
 
         try {
+            // Updating Inventory
+            Receipt receipt = RDS.findRegisteredTransaction(fiscalCode);
+            for (Integer productId:
+                 receipt.getProductList()) {
+                Product product = RDS.findRegisteredProduct(productId);
+                product.setProductInStock(product.getProductInStock() + 1);
+                UDS.updateRegisteredProduct(product);
+            }
+
             DDS.deleteRegisteredPendingTransaction(fiscalCode);
 
             // TODO: email admin of order cancelation
