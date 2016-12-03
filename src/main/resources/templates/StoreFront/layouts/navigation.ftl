@@ -91,8 +91,6 @@
                                 <span class="fa fa-shopping-cart"></span>
                                 <p>Amazon<strong>Platano</strong> <span>Your Shopping Partner</span></p>
                             </a>
-                            <!-- img based logo -->
-                            <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
                         </div>
                         <!-- / logo  -->
                         <!-- cart box -->
@@ -100,10 +98,11 @@
                             <a class="aa-cart-link" href="#">
                                 <span class="fa fa-shopping-basket"></span>
                                 <span class="aa-cart-title">SHOPPING CART</span>
-                                <span class="aa-cart-notify">2</span>
+                                <span class="aa-cart-notify">${shoppingCart?size}</span>
                             </a>
                             <div class="aa-cartbox-summary">
                                 <ul>
+                                    <#list shoppingCart as item>
                                     <li>
                                         <a class="aa-cartbox-img" href="#"><img src="img/woman-small-2.jpg" alt="img"></a>
                                         <div class="aa-cartbox-info">
@@ -112,14 +111,10 @@
                                         </div>
                                         <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
                                     </li>
-                                    <li>
-                                        <a class="aa-cartbox-img" href="#"><img src="img/woman-small-1.jpg" alt="img"></a>
-                                        <div class="aa-cartbox-info">
-                                            <h4><a href="#">Product Name</a></h4>
-                                            <p>1 x $250</p>
-                                        </div>
-                                        <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                                    </li>
+                                    <#else>
+                                    <h2>There are no items in your cart</h2>
+                                    </#list>
+
                                     <li>
                       <span class="aa-cartbox-total-title">
                         Total

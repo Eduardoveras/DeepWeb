@@ -85,7 +85,7 @@ public class AdminController {
 
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
 
-        return new ModelAndView("");
+        return new ModelAndView("/Backend/transactions/transactions");
     }
 
     // Posts

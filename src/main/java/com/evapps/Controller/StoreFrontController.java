@@ -45,7 +45,8 @@ public class StoreFrontController {
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
 
-        return new ModelAndView("StoreFront/index");
+
+        return new ModelAndView("StoreFront/homepage/index");
     }
 
     @GetMapping("/account")
