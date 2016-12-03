@@ -189,14 +189,16 @@ public class AccessController {
 
             for (Product product:
                     shoppingCart) {
-                // Saving transaction registry
-                productList.add(product.getProductId());
-                // Calculating total cost of transaction
-                total += product.getProductPrice();
+                if (product.getProductInStock() > 0){
+                    // Saving transaction registry
+                    productList.add(product.getProductId());
+                    // Calculating total cost of transaction
+                    total += product.getProductPrice();
 
-                // Updating inventory
-                product.setProductInStock(product.getProductInStock() - 1);
-                UDS.updateRegisteredProduct(product);
+                    // Updating inventory
+                    product.setProductInStock(product.getProductInStock() - 1);
+                    UDS.updateRegisteredProduct(product);
+                }
             }
             
             history.setShoppingCart(new HashSet<>()); // Clearing Shopping cart

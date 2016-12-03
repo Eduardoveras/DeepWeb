@@ -157,7 +157,13 @@ public class StoreFrontController {
         try {
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
-            list.add(product.getProductId());
+
+            if (product.getProductInStock() > 0) {
+                list.add(product.getProductId());
+
+                //Updating Inventory
+                product.setProductInStock(product.getProductInStock() - 1);
+            }
 
             CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
 
