@@ -90,12 +90,14 @@ public class StoreFrontController {
     }
 
     @GetMapping("/product-detail/{id}")
-    public ModelAndView product(Model model, @PathVariable("id") Integer productId) {
+    public ModelAndView product(Model model, @PathVariable("id") String productId) {
+        if(RDS.getCurrentLoggedUser() != null)
+            model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        else
+            model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
 
-        if(!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
 
-        Product product = RDS.findRegisteredProduct(productId);
+        Product product = RDS.findRegisteredProduct(Integer.parseInt(productId));
 
         model.addAttribute("item", product);
 
@@ -112,12 +114,12 @@ public class StoreFrontController {
             //
         }
 
-        return new ModelAndView("StoreFront/product-detail");
+        return new ModelAndView("StoreFront/product_details/product-detail");
     }
 
     // Posts
     @PostMapping("/add_to_cart/{productId}")
-    public String addToCart(@PathParam("productId") Integer productId){
+    public String addToCart(@PathParam("productId") String productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -126,7 +128,7 @@ public class StoreFrontController {
             History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
             Set<Product> shoppingCart = history.getShoppingCart();
             Set<Product> browsingHistory = history.getBrowsingHistory();
-            Product product = RDS.findRegisteredProduct(productId);
+            Product product = RDS.findRegisteredProduct(Integer.parseInt(productId));
 
             // Adding to cart
             shoppingCart.add(product);

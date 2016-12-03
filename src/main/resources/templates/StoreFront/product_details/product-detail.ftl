@@ -1,6 +1,6 @@
-<#include "layouts/header.ftl">
+<#include "/StoreFront/layouts/header.ftl">
   <body>  
-<#include "layouts/navigation.ftl">
+<#include "/StoreFront/layouts/navigation.ftl">
  
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
@@ -446,4 +446,4 @@
     </div>
   </section>
   <!-- / Subscribe section -->
-<#include "layouts/footer.ftl">
+<#include "/StoreFront/layouts/footer.ftl">
