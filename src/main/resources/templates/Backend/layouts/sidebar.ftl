@@ -27,7 +27,7 @@
                 <h3><@spring.message "menu" /></h3>
                 <ul class="nav side-menu">
                     <li><a href="/admin/"><i  class="fa fa-plus-square-o"></i> <@spring.message "dashboard" /> <span ></span></a></li>
-                    <li><a href="/admin/products" ><i class="fa fa-shopping-basket"></i> <@spring.message "products" />  <span ></span></a></li>
+                    <li><a href="/admin/inventory" ><i class="fa fa-shopping-basket"></i> <@spring.message "products" />  <span ></span></a></li>
                     <li><a href="/admin/users" ><i class="fa fa-user-md"></i> <@spring.message "users" />  <span ></span></a></li>
                 </ul>
             </div>

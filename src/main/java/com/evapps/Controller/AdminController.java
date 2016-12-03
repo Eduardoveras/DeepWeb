@@ -57,13 +57,13 @@ public class AdminController {
 
     @GetMapping("/admin/inventory")
     public ModelAndView viewInventory(Model model){
-
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
+        System.out.print("putos bugs");
 
-        return new ModelAndView("");
+        return new ModelAndView("/Backend/inventory/inventory");
     }
 
     @GetMapping("/admin/users")

@@ -10,6 +10,8 @@
         <div class="right_col" role="main">
             <div class="">
                 <div class="row">
+                <#include "_products_table.ftl">
+                <#include "_new_product_modal.ftl">
 
 
                 </div>
@@ -23,6 +25,3 @@
 <#include "/Backend/layouts/footer.ftl">
 <#include "_scripts.ftl">
 <#include "/Backend/layouts/pageCloser.ftl">
-
-
-
