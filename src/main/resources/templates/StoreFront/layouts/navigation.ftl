@@ -161,46 +161,46 @@
                 <div class="navbar-collapse collapse">
                     <!-- Left nav -->
                     <ul class="nav navbar-nav">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="#">Men <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Casual</a></li>
-                                <li><a href="#">Sports</a></li>
-                                <li><a href="#">Formal</a></li>
-                                <li><a href="#">Standard</a></li>
-                                <li><a href="#">T-Shirts</a></li>
-                                <li><a href="#">Shirts</a></li>
-                                <li><a href="#">Jeans</a></li>
-                                <li><a href="#">Trousers</a></li>
+                                <li><a href="/products">Casual</a></li>
+                                <li><a href="/products">Sports</a></li>
+                                <li><a href="/products">Formal</a></li>
+                                <li><a href="/products">Standard</a></li>
+                                <li><a href="/products">T-Shirts</a></li>
+                                <li><a href="/products">Shirts</a></li>
+                                <li><a href="/products">Jeans</a></li>
+                                <li><a href="/products">Trousers</a></li>
                                 <li><a href="#">And more.. <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Sleep Wear</a></li>
-                                        <li><a href="#">Sandals</a></li>
-                                        <li><a href="#">Loafers</a></li>
+                                        <li><a href="/products">Sleep Wear</a></li>
+                                        <li><a href="/products">Sandals</a></li>
+                                        <li><a href="/products">Loafers</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
                         <li><a href="#">Women <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Kurta & Kurti</a></li>
-                                <li><a href="#">Trousers</a></li>
-                                <li><a href="#">Casual</a></li>
-                                <li><a href="#">Sports</a></li>
-                                <li><a href="#">Formal</a></li>
-                                <li><a href="#">Sarees</a></li>
-                                <li><a href="#">Shoes</a></li>
+                                <li><a href="/products">Kurta & Kurti</a></li>
+                                <li><a href="/products">Trousers</a></li>
+                                <li><a href="/products">Casual</a></li>
+                                <li><a href="/products">Sports</a></li>
+                                <li><a href="/products">Formal</a></li>
+                                <li><a href="/products">Sarees</a></li>
+                                <li><a href="/products">Shoes</a></li>
                                 <li><a href="#">And more.. <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Sleep Wear</a></li>
-                                        <li><a href="#">Sandals</a></li>
-                                        <li><a href="#">Loafers</a></li>
+                                        <li><a href="/products">Sleep Wear</a></li>
+                                        <li><a href="/products">Sandals</a></li>
+                                        <li><a href="/products">Loafers</a></li>
                                         <li><a href="#">And more.. <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Rings</a></li>
-                                                <li><a href="#">Earrings</a></li>
-                                                <li><a href="#">Jewellery Sets</a></li>
-                                                <li><a href="#">Lockets</a></li>
+                                                <li><a href="/products">Rings</a></li>
+                                                <li><a href="/products">Earrings</a></li>
+                                                <li><a href="/products">Jewellery Sets</a></li>
+                                                <li><a href="/products">Lockets</a></li>
                                                 <li class="disabled"><a class="disabled" href="#">Disabled item</a></li>
                                                 <li><a href="#">Jeans</a></li>
                                                 <li><a href="#">Polo T-Shirts</a></li>
