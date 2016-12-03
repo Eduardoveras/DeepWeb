@@ -125,22 +125,26 @@ public class StoreFrontController {
             return "redirect:/login";
 
         try {
-            History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
-            Set<Product> shoppingCart = history.getShoppingCart();
-            Set<Product> browsingHistory = history.getBrowsingHistory();
             Product product = RDS.findRegisteredProduct(Integer.parseInt(productId));
 
-            // Adding to cart
-            shoppingCart.add(product);
-            history.setShoppingCart(shoppingCart);
+            if (product.getProductInStock() > 0) {
+                History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
+                Set<Product> shoppingCart = history.getShoppingCart();
+                Set<Product> browsingHistory = history.getBrowsingHistory();
 
-            // Updating the browsing history
-            browsingHistory.add(product);
-            history.setBrowsingHistory(browsingHistory);
+                // Adding to cart
+                shoppingCart.add(product);
+                history.setShoppingCart(shoppingCart);
 
-            UDS.updateRegisteredUserHistory(history);
+                // Updating the browsing history
+                browsingHistory.add(product);
+                history.setBrowsingHistory(browsingHistory);
 
-            return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+                UDS.updateRegisteredUserHistory(history);
+
+                return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+            } else
+                return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail with error message
         } catch (Exception exp){
             //
         }
