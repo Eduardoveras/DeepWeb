@@ -1,5 +1,7 @@
 package com.evapps.Service.Auxiliary;
 
+import com.evapps.Entity.Receipt;
+import com.evapps.Entity.User;
 import com.sendgrid.*;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,26 @@ public class EmailService {
             return false;
         }
         return true;
+    }
+
+    public boolean sendOrderConfirmationEmail(Receipt receipt)
+    {
+
+        String content = "Thanks for your order!\n\n"+"Order#"+receipt.getFiscalCode();
+        return sendEmail(receipt.getUser().getEmail(),
+                "Order Confirmation from platano",
+                content);
+
+    }
+
+    public boolean sendUserRegistrationConfirmation(User user)
+    {
+
+        String content = "Welcome to amazon platano "+user.getFullName()+"!!";
+        return sendEmail(user.getEmail(),
+                "Welcome to platano!",
+                content);
+
     }
 
 }
