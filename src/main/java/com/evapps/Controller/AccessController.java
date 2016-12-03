@@ -268,6 +268,15 @@ public class AccessController {
             return "redirect:/myHistory"; // TODO: Add error message
 
         try {
+            // Updating Inventory
+            Receipt receipt = RDS.findRegisteredTransaction(fiscalCode);
+            for (Integer productId:
+                 receipt.getProductList()) {
+                Product product = RDS.findRegisteredProduct(productId);
+                product.setProductInStock(product.getProductInStock() + 1);
+                UDS.updateRegisteredProduct(product);
+            }
+
             DDS.deleteRegisteredPendingTransaction(fiscalCode);
 
             // TODO: email admin of order cancelation
