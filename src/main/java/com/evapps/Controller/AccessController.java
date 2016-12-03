@@ -13,7 +13,6 @@ import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
-import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -173,6 +173,47 @@ public class AccessController {
         return "redirect:/profile"; // TODO: Add error message
     }
 
+    @PostMapping("/confirm_transaction")
+    public String buyItemsInCart(){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        try {
+            // Fetching shoppingCart
+            History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
+            Set<Product> shoppingCart = history.getShoppingCart(); // Fetching the user's shoppingCart
+
+            ArrayList<Integer> productList = new ArrayList<>();
+            Float total = 0.00f;
+
+            for (Product product:
+                    shoppingCart) {
+                // Saving transaction registry
+                productList.add(product.getProductId());
+                // Calculating total cost of transaction
+                total += product.getProductPrice();
+
+                // Updating inventory
+                product.setProductInStock(product.getProductInStock() - 1);
+                UDS.updateRegisteredProduct(product);
+            }
+            
+            history.setShoppingCart(new HashSet<>()); // Clearing Shopping cart
+
+            //Completing transaction
+            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, total);
+
+            // TODO: Send email to admin for order confirmation
+
+            return "redirect:/myHistory";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/myHistory"; // TODO: Add error message
+    }
+
     @PostMapping("/remove/{productId}")
     public String removeFromCart(@PathParam("productId") Integer productId){
 
@@ -228,6 +269,9 @@ public class AccessController {
 
         try {
             DDS.deleteRegisteredPendingTransaction(fiscalCode);
+
+            // TODO: email admin of order cancelation
+
             return "redirect:/myHistory";
         } catch (Exception exp){
             //

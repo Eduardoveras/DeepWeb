@@ -71,17 +71,6 @@ public class CreateDataService
             throw new IllegalArgumentException("Nothing is free in life");
 
         try {
-
-            // Clearing the shoppingCart
-            History history = historyRepository.findByUser(email);
-            Set<Product> shoppingCart = history.getShoppingCart(); // Fetching the user's shoppingCart
-            for (Integer i:
-                 productList) {
-                Product product = productRepository.findByProductId(i); // Finding the product in the DB
-                shoppingCart.remove(product); // Removing product
-            }
-            history.setShoppingCart(shoppingCart); // Updating History
-
             return receiptRepository.save(new Receipt(userRepository.findByEmail(email), productList, total));
         } catch (PersistenceException exp){
             throw new PersistenceException("Persistence Error --> " + exp.getMessage());
