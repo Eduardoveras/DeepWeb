@@ -90,7 +90,7 @@ public class AdminController {
 
     // Posts
     @PostMapping("/register")
-    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress, @RequestParam("password") String password, @RequestParam("confirm") String confirmPassword, @RequestParam("type") Permission role){
+    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress,@RequestParam("city") String city, @RequestParam("country") String country,@RequestParam("password") String password, @RequestParam("role") Permission role){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -98,11 +98,8 @@ public class AdminController {
         if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return "redirect:/login"; // User must be an admin
 
-        if (!password.equals(confirmPassword))
-            return "redirect:/register_page"; // TODO: Add error message
-
         try {
-            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress, password, role);
+            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress,country,city, password, role);
 
             // TODO: Send confirmation email
 
