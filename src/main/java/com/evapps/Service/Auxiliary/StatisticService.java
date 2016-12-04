@@ -31,7 +31,7 @@ public class StatisticService {
 
     // Functions
     // History related Statistics
-    public Product mostViewedProduct(){
+    public Product ProductViewStatistics(boolean option){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
 
@@ -40,8 +40,11 @@ public class StatisticService {
                 for (Product product: history.getBrowsingHistory())
                     statistic.replace(product.getProductId(), statistic.get(product.getProductId()) + 1);
 
-            return productRepository.findByProductId(getMaxValue((Integer[]) statistic.values().toArray()));
-
+            if (option) // Max
+                return productRepository.findByProductId(getMaxValue((Integer[]) statistic.values().toArray()));
+            else // Min
+                return productRepository.findByProductId(getMinValue((Integer[]) statistic.values().toArray()));
+            
         } catch (Exception exp) {
             //
         }
