@@ -33,6 +33,26 @@
                     </div>
                 </div>
 
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country"><@spring.message "country" /> <span
+                            class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select id="country" name="country" required="required" class="form-control col-md-7 col-xs-12"></select>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="state"><@spring.message "city" /> <span
+                            class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select id="state" name="state" required="required" class="form-control col-md-7 col-xs-12"></select>
+                    </div>
+                </div>
+
                 <div class="form-group item">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address"><@spring.message "address" /> <span class="required">*</span>
                     </label><br>
@@ -41,8 +61,10 @@
                     </div>
                 </div>
 
+
+
                 <div class="form-group item">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="occupation"><@spring.message "password" /> <span class="required">*</span>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password"><@spring.message "password" /> <span class="required">*</span>
                     </label><br>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <input type="password" id="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
@@ -61,10 +83,10 @@
                     <label class="control-label col-md-3 col-sm-3 col-xs-12"><@spring.message "role" /> <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="radio">
-                            <label><input type="radio" name="role" id="role1" value="M" required checked>ADMIN</label>
+                            <label><input type="radio" name="role" id="role1" value="ADMIN" required checked>ADMIN</label>
                         </div>
                         <div class="radio">
-                            <label><input type="radio" name="role" id="role2"  value="A">USER</label>
+                            <label><input type="radio" name="role" id="role2"  value="USER">USER</label>
                         </div>
                     </div>
                 </div>

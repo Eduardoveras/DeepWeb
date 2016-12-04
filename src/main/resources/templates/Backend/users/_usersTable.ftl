@@ -11,6 +11,8 @@
                     <th><span style="text-transform: uppercase;"><@spring.message "ID" /></span></th>
                     <th><span style="text-transform: uppercase;"><@spring.message "name" /></span></th>
                     <th><span style="text-transform: uppercase;"><@spring.message "role" /></span></th>
+                    <th><span style="text-transform: uppercase;"><@spring.message "country" /></span></th>
+                    <th><span style="text-transform: uppercase;"><@spring.message "city" /></span></th>
                     <th><span style="text-transform: uppercase;"><@spring.message "address" /></span></th>
                     <th><span style="text-transform: uppercase;"><@spring.message "status" /></span></th>
                 </tr>
@@ -21,6 +23,8 @@
                     <td>${user.getEmail()}</td>
                     <td>${user.getFullName()}</td>
                     <td>${user.getRole()}</td>
+                    <td>${user.getCountry()}</td>
+                    <td>${user.getCity()}</td>
                     <td>${user.getShippingAddress()}</td>
                     <td>${user.getStatus()}</td>
                 </tr>
