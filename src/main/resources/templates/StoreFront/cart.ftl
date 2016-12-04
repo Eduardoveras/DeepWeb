@@ -20,12 +20,16 @@
   </section>
   <!-- / catg header banner section -->
 
+
+
+
  <!-- Cart view section -->
  <section id="cart-view">
    <div class="container">
      <div class="row">
        <div class="col-md-12">
          <div class="cart-view-area">
+          <#if shoppingCart?has_content >
            <div class="cart-view-table">
              <form action="">
                <div class="table-responsive">
@@ -84,10 +88,14 @@
                <a href="#" class="aa-cart-view-btn">Proced to Checkout</a>
              </div>
            </div>
+          <#else >
+          <h1>YOU DONT HAVE ITEMS IN YOUR CART, ADD SOME!
+          </#if>
          </div>
        </div>
      </div>
    </div>
  </section>
  <!-- / Cart view section -->
+
 <#include "layouts/footer.ftl">
