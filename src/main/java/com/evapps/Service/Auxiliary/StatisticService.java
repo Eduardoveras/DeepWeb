@@ -32,7 +32,7 @@ public class StatisticService {
 
     // Functions
     // History related Statistics
-    public Product productViewStatistics(boolean option){
+    public Map<Integer, Integer> productViewStatistics(boolean option){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
 
@@ -41,11 +41,7 @@ public class StatisticService {
                 for (Product product: history.getBrowsingHistory())
                     statistic.replace(product.getProductId(), statistic.get(product.getProductId()) + 1);
 
-            if (option) // Max
-                return productRepository.findByProductId(getMaxValue((Integer[]) statistic.values().toArray()));
-            else // Min
-                return productRepository.findByProductId(getMinValue((Integer[]) statistic.values().toArray()));
-
+            return statistic;
         } catch (Exception exp) {
             //
         }
@@ -53,7 +49,7 @@ public class StatisticService {
         return null;
     }
 
-    public Product productPurchaseStatistics(boolean option){
+    public Map<Integer, Integer> productPurchaseStatistics(){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
 
@@ -62,11 +58,7 @@ public class StatisticService {
                 for (Integer p: receipt.getProductList())
                     statistic.replace(p, statistic.get(p) + 1);
 
-            if (option) // Max
-                return productRepository.findByProductId(getMaxValue((Integer[]) statistic.values().toArray()));
-            else // Min
-                return productRepository.findByProductId(getMinValue((Integer[]) statistic.values().toArray()));
-
+            return statistic;
         } catch (Exception exp) {
             //
         }
@@ -74,7 +66,7 @@ public class StatisticService {
         return null;
     }
 
-    public Map<String, Integer> productSupplierStatistics(boolean option){
+    public Map<String, Integer> productSupplierStatistics(){
 
         try {
             Map<String, Integer> statistic = fetchSupplierLegend();
