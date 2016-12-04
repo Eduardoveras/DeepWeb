@@ -70,8 +70,8 @@
                                     </figcaption>
                                 </figure>
                                 <div class="aa-product-hvr-content">
-                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Add to Wishlist"><span
-                                            class="fa fa-heart-o"></span></a>
+                                    <a href="/one_click/quick_buy/${product.getProductId()}" data-toggle="tooltip" data-placement="top" title="Buy Now"><span
+                                            class="fa fa-shopping-cart"></span></a>
                                     <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span
                                             class="fa fa-exchange"></span></a>
                                     <a href="#" data-toggle2="tooltip" data-placement="top" title="Quick View"

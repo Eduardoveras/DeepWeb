@@ -152,7 +152,7 @@ public class StoreFrontController {
         return "redirect:/"; // TODO: Add error handling
     }
 
-    @PostMapping("/one_click/quick_buy/{productId}")
+    @GetMapping("/one_click/quick_buy/{productId}")
     public String oneClickBuy(@PathParam("productId") Integer productId){
 
         if(!RDS.isUserLoggedIn())
