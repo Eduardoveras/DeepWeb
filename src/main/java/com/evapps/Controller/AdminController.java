@@ -14,10 +14,12 @@ import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +28,7 @@ import javax.management.relation.Role;
 import javax.websocket.server.PathParam;
 
 @Controller
-public class AdminController {
+public class AdminController implements ErrorController {
 
     // Services
     @Autowired
@@ -37,8 +39,13 @@ public class AdminController {
     private UpdateDataService UDS;
     @Autowired
     private DeleteDataService DDS;
+    private static final String ERR_PATH = "/error";
 
-    // Gets
+    @RequestMapping(value = ERR_PATH)
+    public String error() {
+        return "Backend/layouts/error";
+    }
+
     @GetMapping("/admin")
     public ModelAndView index(Model model){
 
@@ -353,5 +360,10 @@ public class AdminController {
             bytes[i++] = b; // Autoboxing
 
         return bytes;
+    }
+
+    @Override
+    public String getErrorPath() {
+        return null;
     }
 }
