@@ -152,8 +152,8 @@ public class StoreFrontController {
         return "redirect:/"; // TODO: Add error handling
     }
 
-    @GetMapping("/one_click/quick_buy/{productId}")
-    public String oneClickBuy(@PathParam("productId") Integer productId){
+    @PostMapping("/one_click/quick_buy")
+    public String oneClickBuy(@RequestParam("productId") Integer productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -165,13 +165,14 @@ public class StoreFrontController {
             if (product.getProductInStock() > 0) {
                 list.add(product.getProductId());
 
-                //Updating Inventory
+                // Updating Inventory
                 product.setProductInStock(product.getProductInStock() - 1);
             }
 
             CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
 
             // TODO: send email to admin to confirm transaction
+            // TODO: Add jasper Report
 
             return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
         } catch (Exception exp){
