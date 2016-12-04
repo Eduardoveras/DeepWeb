@@ -25,6 +25,10 @@ public class User implements Serializable{
     @Column(length = 1000)
     private String shippingAddress;
     @NotNull
+    private String country;
+    @NotNull
+    private String city;
+    @NotNull
     private String password;
     @NotNull
     private Permission role;
@@ -39,11 +43,13 @@ public class User implements Serializable{
 
     }
 
-    public User(String email, String firstName, String lastName, String shippingAddress, String password, Permission role){
+    public User(String email, String firstName, String lastName, String shippingAddress, String country, String city, String password, Permission role){
         this.setEmail(email.toLowerCase());
         this.setFirstName(firstName.toLowerCase());
         this.setLastName(lastName.toUpperCase());
         this.setShippingAddress(shippingAddress);
+        this.setCountry(country);
+        this.setCity(city);
         this.setPassword(password);
         this.setRole(role);
         this.setStatus(AccountStatus.SUSPENDED); // Changes once receive confirmation email
@@ -132,5 +138,21 @@ public class User implements Serializable{
 
     public void setStatus(AccountStatus status) {
         this.status = status;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

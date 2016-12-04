@@ -82,13 +82,13 @@ public class CreateDataService
     }
 
     // User and History Creation
-    public User registerNewUser(String email, String firstName, String lastName, String shippingAddress, String password, Permission permission) throws Exception{
+    public User registerNewUser(String email, String firstName, String lastName, String shippingAddress, String country, String city, String password, Permission permission) throws Exception{
 
         if (isEmailAddressTaken(email))
             throw new IllegalArgumentException("This user Account already exist");
 
         try {
-            User user = userRepository.save(new User(email, firstName, lastName, encryptionService.encryptPassword(password), shippingAddress, permission));
+            User user = userRepository.save(new User(email, firstName, lastName, encryptionService.encryptPassword(password), shippingAddress, country, city, permission));
             historyRepository.save(new History(user)); // Creating the users history
             return user;
         } catch (PersistenceException exp){
