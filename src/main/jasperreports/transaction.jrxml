@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockReport" pageWidth="500" pageHeight="600" columnWidth="450" leftMargin="5" rightMargin="5" topMargin="10" bottomMargin="1">
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports" name="StockReport" pageWidth="500" pageHeight="600" columnWidth="450" leftMargin="5" rightMargin="5" topMargin="10" bottomMargin="1">
     <reportFont name="Arial" isDefault="true" fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 
     <parameter name="Title" class="java.lang.String"/>
@@ -81,19 +81,21 @@
                 <textFieldExpression class="java.lang.Float"><![CDATA[$F{Total}]]></textFieldExpression>
             </textField>
         </band>
+    </detail>
 
-        <pageFooter>
-            <band height="40" splitType="Stretch">
-                <textField>
-                    <reportElement x="200" y="20" width="85" height="15"/>
-                    <textElement textAlignment="Right"/>
-                    <textFieldExpression class="java.lang.String"><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
-                </textField>
-                <textField evaluationTime="Report">
-                    <reportElement x="285" y="20" width="75" height="15"/>
-                    <textElement textAlignment="Left"/>
-                    <textFieldExpression class="java.lang.String"><![CDATA[" of " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
-                </textField>
-            </band>
-        </pageFooter></detail>
-    
+
+    <pageFooter>
+        <band height="40" splitType="Stretch">
+            <textField>
+                <reportElement x="200" y="20" width="85" height="15"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression class="java.lang.String"><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="285" y="20" width="75" height="15"/>
+                <textElement textAlignment="Left"/>
+                <textFieldExpression class="java.lang.String"><![CDATA[" of " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>
