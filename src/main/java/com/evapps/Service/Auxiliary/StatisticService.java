@@ -74,6 +74,23 @@ public class StatisticService {
         return null;
     }
 
+    public Map<String, Integer> productSupplierStatistics(boolean option){
+
+        try {
+            Map<String, Integer> statistic = fetchSupplierLegend();
+
+            for (Product product: productRepository.findAll())
+                statistic.replace(product.getSupplier(), statistic.get(product.getSupplier()) + 1);
+
+            return statistic;
+
+        } catch (Exception exp) {
+            //
+        }
+
+        return null;
+    }
+
 
     // Auxiliary Functions
     private Map<Integer, Integer> fetchProductLegend(){
@@ -82,6 +99,17 @@ public class StatisticService {
         for (Product p:
              productRepository.findAll()) {
             legend.put(p.getProductId(), 0);
+        }
+
+        return legend;
+    }
+
+    private Map<String, Integer> fetchSupplierLegend(){
+        Map<String, Integer> legend = new HashMap<>();
+
+        for (Product p:
+                productRepository.findAll()) {
+                legend.putIfAbsent(p.getSupplier(), 0);
         }
 
         return legend;
