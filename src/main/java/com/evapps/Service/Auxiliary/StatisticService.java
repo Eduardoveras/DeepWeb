@@ -5,6 +5,7 @@ package com.evapps.Service.Auxiliary;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
@@ -31,7 +32,7 @@ public class StatisticService {
 
     // Functions
     // History related Statistics
-    public Product ProductViewStatistics(boolean option){
+    public Product productViewStatistics(boolean option){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
 
@@ -44,13 +45,35 @@ public class StatisticService {
                 return productRepository.findByProductId(getMaxValue((Integer[]) statistic.values().toArray()));
             else // Min
                 return productRepository.findByProductId(getMinValue((Integer[]) statistic.values().toArray()));
-            
+
         } catch (Exception exp) {
             //
         }
 
         return null;
     }
+
+    public Product productPurchaseStatistics(boolean option){
+
+        Map<Integer, Integer> statistic = fetchProductLegend();
+
+        try {
+            for (Receipt receipt: receiptRepository.findAll())
+                for (Integer p: receipt.getProductList())
+                    statistic.replace(p, statistic.get(p) + 1);
+
+            if (option) // Max
+                return productRepository.findByProductId(getMaxValue((Integer[]) statistic.values().toArray()));
+            else // Min
+                return productRepository.findByProductId(getMinValue((Integer[]) statistic.values().toArray()));
+
+        } catch (Exception exp) {
+            //
+        }
+
+        return null;
+    }
+
 
     // Auxiliary Functions
     private Map<Integer, Integer> fetchProductLegend(){
