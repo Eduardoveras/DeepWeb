@@ -108,6 +108,29 @@ public class StatisticService {
         return null;
     }
 
+    public Map<String, Float> userAverageNumberOfItemPurchase(){
+
+        try {
+            Map<String, Float> statistics = fetchUserLegend();
+
+            for (String email: statistics.keySet()) {
+                int count = 0;
+                for (Receipt receipt : receiptRepository.findByUser(email)) {
+                    statistics.replace(email, statistics.get(email) + receipt.getProductList().size());
+                    count++;
+                }
+
+                statistics.replace(email, statistics.get(email)/count);
+            }
+
+            return statistics;
+        } catch (Exception exp) {
+            //
+        }
+
+        return null;
+    }
+
 
     // Auxiliary Functions
     private Map<Integer, Integer> fetchProductLegend(){
