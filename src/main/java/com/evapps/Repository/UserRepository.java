@@ -20,4 +20,10 @@ public interface UserRepository  extends JpaRepository<User, String>{
 
     @Query("select u from User u where u.status = :status")
     List<User> findByAccountStatus(@Param("status") AccountStatus status);
+
+    @Query("select u from User u where u.country = :country")
+    List<User> findByCountry(@Param("country") String country);
+
+    @Query("select u from User u where u.city = :city and u.country = :country")
+    List<User> findByCity(@Param("city") String city, @Param("country") String coutry);
 }
