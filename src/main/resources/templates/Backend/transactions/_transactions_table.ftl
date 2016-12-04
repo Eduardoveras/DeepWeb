@@ -5,10 +5,10 @@
                 <thead>
                 <tr>
                     <th><span style="text-transform: uppercase;"><@spring.message "idFrag1" /></span></th>
-                    <th><span style="text-transform: uppercase;"><@spring.message "name" /></span></th>
-                    <th><span style="text-transform: uppercase;"><@spring.message "description" /></span></th>
-                    <th><span style="text-transform: uppercase;"><@spring.message "price" /></span></th>
-                    <th><span style="text-transform: uppercase;">Stock</span></th>
+                    <th><span style="text-transform: uppercase;">Users</span></th>
+                    <th><span style="text-transform: uppercase;">items</span></th>
+                    <th><span style="text-transform: uppercase;">price</span></th>
+                    <th><span style="text-transform: uppercase;">Status</span></th>
                     <th><span style="text-transform: uppercase;">Supplier</span></th>
                     <th><span style="text-transform: uppercase;">Options</span></th>
                 </tr>
@@ -17,8 +17,13 @@
                 <#list transactions as transaction>
                 <tr>
                     <td>${transaction.getFiscalCode()}</td>
-                    <td>${transaction.getUser()}</td>
-                    <td>${transaction.getProductList()}</td>
+                    <td>${transaction.getUser().getEmail()}</td>
+                    <td>
+                    <#list transaction.getProductList() as item>
+                    ${item}
+                    </#list>
+
+                    </td>
                     <td>${transaction.getTotal()}</td>
                     <td>${transaction.getStatus()}</td>
                     <td>${transaction.getTransactionDate()}</td>

@@ -59,10 +59,14 @@
                         <#list selection as product>
                             <li>
                                 <figure>
+                                    <form method="post" action="/add_to_cart" name="add-to-cart" id="add-to-cart">
+                                        <input type="hidden" name="productId" value="${product.getProductId()}">
+                                    </form>
                                     <a class="aa-product-img" href="#"><img src="img/women/girl-1.png"
                                                                             alt="polo shirt img"></a>
-                                    <a class="aa-add-card-btn" href="#"><span class="fa fa-shopping-cart"></span>Add To
+                                    <a class="aa-add-card-btn" onclick="$('#add-to-cart').submit();"><span class="fa fa-shopping-cart" ></span>Add To
                                         Cart</a>
+
                                     <figcaption>
                                         <h4 class="aa-product-title"><a href="/product-detail/${product.getProductId()}">${product.getProductName()}</a></h4>
                                         <span class="aa-product-price">${product.getProductPrice()}</span><span class="aa-product-price"><del>$65.50</del></span>
@@ -72,8 +76,7 @@
                                 <div class="aa-product-hvr-content">
                                     <form action="/one_click/quick_buy" method="post" >
                                         <input type="hidden" name="productId" value="${product.getProductId()}">
-                                        <input type="submit" value="COMPRAR AHORA" >
-                                        <button
+                                        <input type="submit"  class="btn btn-link" value="COMPRAR AHORA" >
                                     </form>
                                     <a href="/one_click/quick_buy/${product.getProductId()}" data-toggle="tooltip" data-placement="top" title="Buy Now"><span
                                             class="fa fa-shopping-cart"></span></a>

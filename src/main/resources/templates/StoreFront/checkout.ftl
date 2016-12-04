@@ -26,7 +26,7 @@
      <div class="row">
        <div class="col-md-12">
         <div class="checkout-area">
-          <form action="">
+          <form action="/confirm_transaction" method="post" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-8">
                 <div class="checkout-left">
@@ -281,6 +281,7 @@
               </div>
               <div class="col-md-4">
                 <div class="checkout-right">
+                  <#if shoppingCart?has_content>
                   <h4>Order Summary</h4>
                   <div class="aa-order-summary-area">
                     <table class="table table-responsive">
@@ -291,28 +292,14 @@
                         </tr>
                       </thead>
                       <tbody>
+                      <#list shoppingCart as item>
                         <tr>
-                          <td>T-Shirt <strong> x  1</strong></td>
-                          <td>$150</td>
+                          <td>${item.getProductName()} <strong> x  1</strong></td>
+                          <td>$${item.getProductPrice()}</td>
                         </tr>
-                        <tr>
-                          <td>Polo T-Shirt <strong> x  1</strong></td>
-                          <td>$250</td>
-                        </tr>
-                        <tr>
-                          <td>Shoes <strong> x  1</strong></td>
-                          <td>$350</td>
-                        </tr>
+                      </#list>
                       </tbody>
                       <tfoot>
-                        <tr>
-                          <th>Subtotal</th>
-                          <td>$750</td>
-                        </tr>
-                         <tr>
-                          <th>Tax</th>
-                          <td>$35</td>
-                        </tr>
                          <tr>
                           <th>Total</th>
                           <td>$785</td>
@@ -327,6 +314,7 @@
                     <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">    
                     <input type="submit" value="Place Order" class="aa-browse-btn">                
                   </div>
+                  </#if>
                 </div>
               </div>
             </div>
