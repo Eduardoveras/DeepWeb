@@ -12,16 +12,13 @@ import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
 import com.evapps.Service.Auxiliary.EncryptionService;
-import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
-import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
-import java.util.Set;
 
 @Service
 public class CreateDataService

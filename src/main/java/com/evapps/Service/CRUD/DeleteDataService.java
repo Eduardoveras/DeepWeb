@@ -5,7 +5,6 @@ package com.evapps.Service.CRUD;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
-import com.evapps.Entity.Receipt;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
