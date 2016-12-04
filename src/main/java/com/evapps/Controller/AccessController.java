@@ -189,6 +189,27 @@ public class AccessController {
         return "redirect:/profile"; // TODO: Add error message
     }
 
+    @PostMapping("/edit/full_address")
+    public String editCompleteAddress(@RequestParam("email") String email, @RequestParam("newAdress") String newAddress, @RequestParam("newCountry") String newCountry, @RequestParam("newCity") String newCity){
+
+        if (!RDS.isUserLoggedIn())
+            return "redirect:/login";
+
+        try {
+            User user = RDS.findRegisteredUserAccount(email);
+            user.setShippingAddress(newAddress);
+            user.setCountry(newCountry);
+            user.setCity(newCity);
+            UDS.updateRegisteredUserAccount(user);
+
+            return "redirect:/profile";
+        } catch (Exception exp){
+            //
+        }
+
+        return "redirect:/profile"; // TODO: Add error message
+    }
+
     @PostMapping("/upload/user_picture")
     public String uploadUserProfilePicture(@RequestParam("email") String email, @RequestParam("file") MultipartFile picture){
 
