@@ -6,6 +6,7 @@ package com.evapps.Service.Auxiliary;
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.Receipt;
+import com.evapps.Entity.User;
 import com.evapps.Repository.HistoryRepository;
 import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
@@ -31,7 +32,7 @@ public class StatisticService {
     private UserRepository userRepository;
 
     // Functions
-    // History related Statistics
+    // Product related Statistics
     public Map<Integer, Integer> productViewStatistics(boolean option){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
@@ -83,6 +84,30 @@ public class StatisticService {
         return null;
     }
 
+    // Transaction Related Functions
+    public Map<String, Float> userAveragePurchaseByDollar(){
+
+        try {
+            Map<String, Float> statistics = fetchUserLegend();
+
+            for (String email: statistics.keySet()) {
+                int count = 0;
+                for (Receipt receipt : receiptRepository.findByUser(email)) {
+                    statistics.replace(email, statistics.get(email) + receipt.getTotal());
+                    count++;
+                }
+
+                statistics.replace(email, statistics.get(email)/count);
+            }
+
+            return statistics;
+        } catch (Exception exp) {
+            //
+        }
+
+        return null;
+    }
+
 
     // Auxiliary Functions
     private Map<Integer, Integer> fetchProductLegend(){
@@ -99,25 +124,19 @@ public class StatisticService {
     private Map<String, Integer> fetchSupplierLegend(){
         Map<String, Integer> legend = new HashMap<>();
 
-        for (Product p:
-                productRepository.findAll()) {
-                legend.putIfAbsent(p.getSupplier(), 0);
-        }
+        for (Product p: productRepository.findAll())
+            legend.putIfAbsent(p.getSupplier(), 0);
 
         return legend;
     }
 
-    private Integer getMaxValue(Integer[] list){
-        Arrays.sort(list);
+    private Map<String, Float> fetchUserLegend(){
+        Map<String, Float> legend = new HashMap<>();
 
-        return list[list.length - 1];
+        for (User user: userRepository.findAll())
+            legend.putIfAbsent(user.getEmail(), 0.00f);
+
+        return legend;
     }
-
-    private Integer getMinValue(Integer[] list){
-        Arrays.sort(list);
-
-        return list[0];
-    }
-
 
 }
