@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="StockReport" pageWidth="500" pageHeight="600" columnWidth="450" leftMargin="5" rightMargin="5" topMargin="10" bottomMargin="1">
+    <reportFont name="Arial" isDefault="true" fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+
+    <parameter name="Title" class="java.lang.String"/>
+    <parameter name="fiscalCode" class="java.lang.Integer"/>
+
+    <queryString>
+        <![CDATA[select fiscal_code, user_first_name, user_last_name, user_email, transaction_date, product_list, total from receipts where fiscal_code = $P{fiscalCode}]]>
+    </queryString>
+
+    <field name="fiscal_code" class="java.lang.String"/>
+    <field name="user_first_name" class="java.lang.String"/>
+    <field name="user_last_name" class="java.lang.String"/>
+    <field name="user_email" class="java.lang.String"/>
+    <field name="transaction_date" class="java.sql.Timestamp"/>
+    <field name="product_list" class="java.util.ArrayList"/>
+    <field name="total" class="java.lang.Float"/>
+
+    <title>
+        <band height="50" splitType="Stretch">
+            <textField isBlankWhenNull="true">
+                <reportElement x="0" y="5" width="490" height="30"/>
+                <textElement textAlignment="Center">
+                    <font reportFont="Arial" size="22"/>
+                </textElement>
+                <textFieldExpression class="java.lang.String"><![CDATA[$P{Title}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <pageHeader>
+        <band height="20" splitType="Stretch">
+            <textField>
+                <reportElement mode="Opaque" x="0" y="5" width="490" height="15" forecolor="#FFFFFF" backcolor="#777765"/>
+                <textElement textAlignment="Center">
+                    <font reportFont="Arial"/>
+                </textElement>
+                <textFieldExpression>Thank you for choosing Amazon Platato</textFieldExpression>
+                <textFieldExpression>Always at your service</textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+
+
+    <detail>
+        <band height="20" splitType="Stretch">
+            <textField>
+                <reportElement positionType="Float" x="0" y="4" width="100" height="15"/>
+                <textElement textAlignment="Left"/>
+                <textFieldExpression class="java.lang.String"><![CDATA[$F{fiscal_code}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement positionType="Float" x="0" y="15" width="170" height="15"/>
+                <textElement/>
+                <textFieldExpression class="java.lang.String"><![CDATA[$F{user_first_name}]]> <![CDATA[$F{user_last_name}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement positionType="Float" x="0" y="30" width="170" height="15"/>
+                <textElement/>
+                <textFieldExpression class="java.lang.String"><![CDATA[$F{user_email}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement positionType="Float" x="0" y="45" width="170" height="15"/>
+                <textElement/>
+                <textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{transaction_date}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement positionType="Float" x="0" y="60" width="100" height="15"/>
+                <textElement/>
+                <textFieldExpression class="java.util.ArrayList"><![CDATA[$F{product_list]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement positionType="Float" x="0" y="75" width="100" height="15"/>
+                <textElement/>
+                <textFieldExpression class="java.lang.Float"><![CDATA[$F{Total}]]></textFieldExpression>
+            </textField>
+        </band>
+
+        <pageFooter>
+            <band height="40" splitType="Stretch">
+                <textField>
+                    <reportElement x="200" y="20" width="85" height="15"/>
+                    <textElement textAlignment="Right"/>
+                    <textFieldExpression class="java.lang.String"><![CDATA["Page " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+                </textField>
+                <textField evaluationTime="Report">
+                    <reportElement x="285" y="20" width="75" height="15"/>
+                    <textElement textAlignment="Left"/>
+                    <textFieldExpression class="java.lang.String"><![CDATA[" of " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+                </textField>
+            </band>
+        </pageFooter></detail>
+    
