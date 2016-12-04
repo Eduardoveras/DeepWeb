@@ -34,7 +34,7 @@
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">RE-STOCK</a></li>
-                                <li><a data-toggle="modal" data-target="#meeting" href="#">EDIT</a></li>
+                                <li><a href="/admin/inventory/edit/${product.getProductId()}">EDIT</a></li>
                                 <li><form action="/admin/delete_product" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="ID" id="ID" value="${product.getProductId()}">
                                     <input type="submit" value="DELETE" class="btn btn-danger">

@@ -62,9 +62,18 @@ public class AdminController {
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
-        System.out.print("putos bugs");
 
         return new ModelAndView("/Backend/inventory/inventory");
+    }
+
+    @GetMapping("/admin/inventory/edit/{id}")
+    public ModelAndView editProduct(Model model,@PathParam("id") String productId ){
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        model.addAttribute("userID", productId);
+
+        return new ModelAndView("/Backend/inventory/edit_product");
     }
 
     @GetMapping("/admin/users")
