@@ -13,6 +13,8 @@ import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +22,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.*;
 
 @Controller
 public class AccessController {
@@ -82,6 +87,33 @@ public class AccessController {
         model.addAttribute("transaction", RDS.findRegisteredTransaction(fiscalCode));
 
         return new ModelAndView("");
+    }
+
+    @GetMapping("/download_pdf/transaction/{fiscalCode}")
+    @ResponseBody
+    public void downloadTransaction(@PathParam("fiscalCode") String fiscalCode, HttpServletResponse response) throws JRException, IOException{
+
+        InputStream jasperStream;
+
+        try {
+             jasperStream = this.getClass().getResourceAsStream("/jasperreports/transaction.jasper");
+        } catch (Exception exp){
+            JasperCompileManager.compileReportToFile("/jasperreports/transaction.jrsxml", "/jasperreports/transaction.jasper");
+            jasperStream = this.getClass().getResourceAsStream("/jasperreports/transaction.jasper");
+        }
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("Title", "Transaction Report");
+        params.put("fiscalCode", fiscalCode);
+
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+
+        response.setContentType("application/x-pdf");
+        response.setHeader("Content-disposition", "inline; filename=Transaction_Report_" + fiscalCode + ".pdf");
+
+        final OutputStream outputStream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
     }
 
     // Post
@@ -204,9 +236,10 @@ public class AccessController {
             history.setShoppingCart(new HashSet<>()); // Clearing Shopping cart
 
             //Completing transaction
-            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, total);
+            Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, total);
 
             // TODO: Send email to admin for order confirmation
+            // TODO: create downloadable Jasper Report of Transaction
 
             return "redirect:/myHistory";
         } catch (Exception exp){
