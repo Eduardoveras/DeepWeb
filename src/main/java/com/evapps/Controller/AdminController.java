@@ -173,14 +173,11 @@ public class AdminController {
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    @PostMapping("/delete/product/{productId}")
-    public String deleteProduct(@PathParam("productId") Integer productId){
+    @PostMapping("/admin/delete_product")
+    public String deleteProduct(@RequestParam("ID") Integer productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
-
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
-            return "redirect:/login"; // User must be an admin
 
         try {
             DDS.deleteRegisteredProduct(productId);
