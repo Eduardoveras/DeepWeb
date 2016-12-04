@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.management.relation.Role;
 import javax.websocket.server.PathParam;
 
 @Controller
@@ -90,16 +91,24 @@ public class AdminController {
 
     // Posts
     @PostMapping("/register")
-    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress,@RequestParam("city") String city, @RequestParam("country") String country,@RequestParam("password") String password, @RequestParam("role") Permission role){
+    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress,@RequestParam("state") String city, @RequestParam("country") String country,@RequestParam("password") String password, @RequestParam("role") String role){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
+        Permission per;
+        if (role.equals("ADMIN"))
+        {
+            per = Permission.ADMIN;
+        }
+        else
+        {
+            per = Permission.CONSUMER;
+        }
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
-            return "redirect:/login"; // User must be an admin
+
 
         try {
-            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress,country,city, password, role);
+            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase(), shippingAddress,country,city, password,per );
 
             // TODO: Send confirmation email
 
