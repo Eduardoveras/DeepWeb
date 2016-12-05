@@ -239,9 +239,11 @@ public class AccessController {
             // Fetching shoppingCart
             History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
             Set<Product> shoppingCart = history.getShoppingCart(); // Fetching the user's shoppingCart
+            ArrayList<Integer> amount = history.getAmount(); // Fetching the amount bought of each product
 
             ArrayList<Integer> productList = new ArrayList<>();
             Float total = 0.00f;
+            int count = 0;
 
             for (Product product:
                     shoppingCart) {
@@ -249,7 +251,7 @@ public class AccessController {
                     // Saving transaction registry
                     productList.add(product.getProductId());
                     // Calculating total cost of transaction
-                    total += product.getProductPrice();
+                    total += product.getProductPrice() * amount.get(count++);
 
                     // Updating inventory
                     product.setProductInStock(product.getProductInStock() - 1);
@@ -260,7 +262,7 @@ public class AccessController {
             history.setShoppingCart(new HashSet<>()); // Clearing Shopping cart
 
             //Completing transaction
-            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, total);
+            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, amount, total);
 
             // TODO: Send email to admin for order confirmation
 
@@ -281,8 +283,17 @@ public class AccessController {
         try {
             History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
             Set<Product> shoppingCart = history.getShoppingCart();
+            ArrayList<Integer> amount = history.getAmount();
             Product product = RDS.findRegisteredProduct(productId);
 
+            int count = 0;
+            for (Product p: shoppingCart)
+                if (p.getProductId() == productId)
+                    break;
+                else
+                    count++;
+
+            amount.remove(count);
             shoppingCart.remove(product);
             history.setShoppingCart(shoppingCart);
 
