@@ -88,7 +88,7 @@ public class CreateDataService
             throw new IllegalArgumentException("This user Account already exist");
 
         try {
-            User user = userRepository.save(new User(email, firstName, lastName, encryptionService.encryptPassword(password), shippingAddress, country, city, permission));
+            User user = userRepository.save(new User(email, firstName, lastName,  shippingAddress, country, city,encryptionService.encryptPassword(password), permission));
             historyRepository.save(new History(user)); // Creating the users history
             return user;
         } catch (PersistenceException exp){

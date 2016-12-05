@@ -60,9 +60,11 @@ public class StoreFrontController {
 
     @GetMapping("/cart")
     public ModelAndView cart(Model model){
+        if(RDS.getCurrentLoggedUser() != null)
+            model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        else
+            model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
 
-        if(!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
 
         return new ModelAndView("StoreFront/cart");
     }
@@ -70,8 +72,10 @@ public class StoreFrontController {
     @GetMapping("/checkout")
     public ModelAndView checkout(Model model){
 
-        if(!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
+        if(RDS.getCurrentLoggedUser() != null)
+            model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        else
+            model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
 
         return new ModelAndView("StoreFront/checkout");
     }
@@ -118,8 +122,8 @@ public class StoreFrontController {
     }
 
     // Posts
-    @PostMapping("/add_to_cart/{productId}")
-    public String addToCart(@PathParam("productId") String productId){
+    @PostMapping("/add_to_cart")
+    public String addToCart(@RequestParam("productId") String productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -152,8 +156,8 @@ public class StoreFrontController {
         return "redirect:/"; // TODO: Add error handling
     }
 
-    @PostMapping("/one_click/quick_buy/{productId}")
-    public String oneClickBuy(@PathParam("productId") Integer productId){
+    @PostMapping("/one_click/quick_buy")
+    public String oneClickBuy(@RequestParam("productId") Integer productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -165,13 +169,14 @@ public class StoreFrontController {
             if (product.getProductInStock() > 0) {
                 list.add(product.getProductId());
 
-                //Updating Inventory
+                // Updating Inventory
                 product.setProductInStock(product.getProductInStock() - 1);
             }
 
             CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
 
             // TODO: send email to admin to confirm transaction
+            // TODO: Add jasper Report
 
             return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
         } catch (Exception exp){

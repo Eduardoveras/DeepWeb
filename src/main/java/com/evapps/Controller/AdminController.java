@@ -14,18 +14,21 @@ import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.management.relation.Role;
 import javax.websocket.server.PathParam;
 
 @Controller
-public class AdminController {
+public class AdminController implements ErrorController {
 
     // Services
     @Autowired
@@ -36,8 +39,13 @@ public class AdminController {
     private UpdateDataService UDS;
     @Autowired
     private DeleteDataService DDS;
+    private static final String ERR_PATH = "/error";
 
-    // Gets
+    @RequestMapping(value = ERR_PATH)
+    public String error() {
+        return "Backend/layouts/error";
+    }
+
     @GetMapping("/admin")
     public ModelAndView index(Model model){
 
@@ -61,9 +69,18 @@ public class AdminController {
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
-        System.out.print("putos bugs");
 
         return new ModelAndView("/Backend/inventory/inventory");
+    }
+
+    @GetMapping("/admin/inventory/edit/{id}")
+    public ModelAndView editProduct(Model model,@PathParam("id") String productId ){
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        model.addAttribute("userID", productId);
+
+        return new ModelAndView("/Backend/inventory/edit_product");
     }
 
     @GetMapping("/admin/users")
@@ -90,16 +107,24 @@ public class AdminController {
 
     // Posts
     @PostMapping("/register")
-    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress,@RequestParam("city") String city, @RequestParam("country") String country,@RequestParam("password") String password, @RequestParam("role") Permission role){
+    public String register(@RequestParam("email") String email, @RequestParam("first") String firstName, @RequestParam("last") String lastName, @RequestParam("address") String shippingAddress,@RequestParam("state") String city, @RequestParam("country") String country,@RequestParam("password") String password, @RequestParam("role") String role){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
+        Permission per;
+        if (role.equals("ADMIN"))
+        {
+            per = Permission.ADMIN;
+        }
+        else
+        {
+            per = Permission.CONSUMER;
+        }
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
-            return "redirect:/login"; // User must be an admin
+
 
         try {
-            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toUpperCase(), shippingAddress,country,city, password, role);
+            CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase(), shippingAddress,country,city, password,per );
 
             // TODO: Send confirmation email
 
@@ -164,14 +189,11 @@ public class AdminController {
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    @PostMapping("/delete/product/{productId}")
-    public String deleteProduct(@PathParam("productId") Integer productId){
+    @PostMapping("/admin/delete_product")
+    public String deleteProduct(@RequestParam("ID") Integer productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
-
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
-            return "redirect:/login"; // User must be an admin
 
         try {
             DDS.deleteRegisteredProduct(productId);
@@ -338,5 +360,10 @@ public class AdminController {
             bytes[i++] = b; // Autoboxing
 
         return bytes;
+    }
+
+    @Override
+    public String getErrorPath() {
+        return null;
     }
 }
