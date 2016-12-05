@@ -2,6 +2,7 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Entity.Receipt;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
@@ -168,12 +170,13 @@ public class StoreFrontController {
                 product.setProductInStock(product.getProductInStock() - 1);
             }
 
-            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
+            Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
 
             // TODO: send email to admin to confirm transaction
             // TODO: Add jasper Report
+            return "redirect:/download_pdf/transaction?fiscalCode=" + receipt.getFiscalCode();
 
-            return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+            //return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
         } catch (Exception exp){
             //
         }

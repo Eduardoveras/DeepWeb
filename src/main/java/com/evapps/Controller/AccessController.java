@@ -15,6 +15,7 @@ import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.*;
 
 @Controller
@@ -88,31 +90,41 @@ public class AccessController {
         return new ModelAndView("");
     }
 
-    @GetMapping("/download_pdf/transaction/{fiscalCode}")
+    @GetMapping("/download_pdf/transaction")
     @ResponseBody
-    public void downloadTransaction(@PathParam("fiscalCode") String fiscalCode, HttpServletResponse response) throws JRException, IOException{
+    public void downloadTransaction(@RequestParam("fiscalCode") String fiscalCode, HttpServletResponse response) throws JRException, IOException{
 
         InputStream jasperStream;
 
         try {
-             jasperStream = this.getClass().getResourceAsStream("/jasperreports/transaction.jasper");
+             //jasperStream = this.getClass().getResourceAsStream("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
+            URL f = getClass().getResource("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
+            jasperStream = f.openStream();
+             if (jasperStream == null){
+                 //URL location = getClass().getResource("/templates/jasperreports/transaction.jrxml");
+                 //File src = new File(location.getFile());
+                 //String t = src.getPath();
+                 //long size = src.length();
+                 JasperCompileManager.compileReportToFile("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jrxml", "C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
+                 jasperStream = this.getClass().getResourceAsStream("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
+             }
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("Title", "Transaction Report");
+            params.put("fiscalCode", fiscalCode);
+
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+
+            response.setContentType("application/x-pdf");
+            response.setHeader("Content-disposition", "inline; filename=Transaction_Report_" + fiscalCode + ".pdf");
+
+            final OutputStream outputStream = response.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
         } catch (Exception exp){
-            JasperCompileManager.compileReportToFile("/jasperreports/transaction.jrsxml", "/jasperreports/transaction.jasper");
-            jasperStream = this.getClass().getResourceAsStream("/jasperreports/transaction.jasper");
+            System.out.println(exp.getMessage());
         }
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("Title", "Transaction Report");
-        params.put("fiscalCode", fiscalCode);
-
-        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
-
-        response.setContentType("application/x-pdf");
-        response.setHeader("Content-disposition", "inline; filename=Transaction_Report_" + fiscalCode + ".pdf");
-
-        final OutputStream outputStream = response.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
     }
 
     // Post
