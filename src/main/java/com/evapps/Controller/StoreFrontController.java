@@ -61,9 +61,11 @@ public class StoreFrontController {
 
     @GetMapping("/cart")
     public ModelAndView cart(Model model){
+        if(RDS.getCurrentLoggedUser() != null)
+            model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        else
+            model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
 
-        if(!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
 
         return new ModelAndView("StoreFront/cart");
     }
@@ -71,8 +73,10 @@ public class StoreFrontController {
     @GetMapping("/checkout")
     public ModelAndView checkout(Model model){
 
-        if(!RDS.isUserLoggedIn())
-            return new ModelAndView("redirect:/login");
+        if(RDS.getCurrentLoggedUser() != null)
+            model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
+        else
+            model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
 
         return new ModelAndView("StoreFront/checkout");
     }
@@ -119,8 +123,8 @@ public class StoreFrontController {
     }
 
     // Posts
-    @PostMapping("/add_to_cart/{productId}")
-    public String addToCart(@PathParam("productId") String productId){
+    @PostMapping("/add_to_cart")
+    public String addToCart(@RequestParam("productId") String productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
