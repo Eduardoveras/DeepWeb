@@ -25,10 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
@@ -97,17 +94,12 @@ public class AccessController {
         InputStream jasperStream;
 
         try {
-             //jasperStream = this.getClass().getResourceAsStream("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
-            URL f = getClass().getResource("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
-            jasperStream = f.openStream();
-             if (jasperStream == null){
-                 //URL location = getClass().getResource("/templates/jasperreports/transaction.jrxml");
-                 //File src = new File(location.getFile());
-                 //String t = src.getPath();
-                 //long size = src.length();
-                 JasperCompileManager.compileReportToFile("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jrxml", "C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
-                 jasperStream = this.getClass().getResourceAsStream("C:/Users/Djidjelly Siclait/Desktop/Repositories/DeepWeb/src/main/resources/templates/jasperreports/transaction.jasper");
-             }
+            jasperStream = new FileInputStream(new File("").getAbsolutePath().concat("\\src\\main\\resources\\templates\\jasperreports\\transaction.jasper"));
+
+            if (jasperStream == null){
+                 JasperCompileManager.compileReportToFile(new File("").getAbsolutePath().concat("\\src\\main\\resources\\templates\\jasperreports\\transaction.jrxml"), new File("").getAbsolutePath().concat("\\src\\main\\resources\\templates\\jasperreports\\transaction.jasper"));
+                 jasperStream = this.getClass().getResourceAsStream(new File("").getAbsolutePath().concat("\\src\\main\\resources\\templates\\jasperreports\\transaction.jasper"));
+            }
 
             Map<String, Object> params = new HashMap<>();
             params.put("Title", "Transaction Report");
@@ -121,7 +113,6 @@ public class AccessController {
 
             final OutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-
         } catch (Exception exp){
             System.out.println(exp.getMessage());
         }
