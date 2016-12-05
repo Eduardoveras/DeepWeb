@@ -59,7 +59,7 @@ public class CreateDataService
     }
 
     // Receipt Creation
-    public Receipt registerTransaction(String email, ArrayList<Integer> productList, Float total) throws Exception {
+    public Receipt registerTransaction(String email, ArrayList<Integer> productList, ArrayList<Integer> amount, Float total) throws Exception {
 
         if (!isEmailAddressTaken(email))
             throw new IllegalArgumentException("This user account does not exist");
@@ -70,8 +70,11 @@ public class CreateDataService
         if (total < 0.00f)
             throw new IllegalArgumentException("Nothing is free in life");
 
+        if (productList.size() != amount.size())
+            throw new IllegalStateException("An error occurred while registering items; productList size is no equal to amount size");
+
         try {
-            return receiptRepository.save(new Receipt(userRepository.findByEmail(email), productList, total));
+            return receiptRepository.save(new Receipt(userRepository.findByEmail(email), productList, amount, total));
         } catch (PersistenceException exp){
             throw new PersistenceException("Persistence Error --> " + exp.getMessage());
         } catch (NullArgumentException exp){
