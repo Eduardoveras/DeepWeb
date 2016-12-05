@@ -288,7 +288,7 @@ public class AccessController {
 
             int count = 0;
             for (Product p: shoppingCart)
-                if (p.getProductId() == productId)
+                if (p.getProductId().equals(productId))
                     break;
                 else
                     count++;
