@@ -1,14 +1,7 @@
-.gradle
-/build/
+
 !gradle/wrapper/gradle-wrapper.jar
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
+
 
 ### IntelliJ IDEA ###
 .idea
@@ -16,13 +9,7 @@
 *.iml
 *.ipr
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+
 
 
 # Ignore Gradle GUI config
@@ -32,6 +19,11 @@ gradle-app.setting
 .gradletasknamecache
 
 
-
-
 /out/
+
+*.class
+
+
+
+
+
