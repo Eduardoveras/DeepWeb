@@ -124,7 +124,7 @@ public class StoreFrontController {
 
     // Posts
     @PostMapping("/add_to_cart")
-    public String addToCart(@RequestParam("productId") String productId){
+    public String addToCart(@RequestParam("productId") String productId, @RequestParam("amount") Integer quantity){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -135,10 +135,12 @@ public class StoreFrontController {
             if (product.getProductInStock() > 0) {
                 History history = RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail());
                 Set<Product> shoppingCart = history.getShoppingCart();
+                ArrayList<Integer> amount = history.getAmount();
                 Set<Product> browsingHistory = history.getBrowsingHistory();
 
                 // Adding to cart
                 shoppingCart.add(product);
+                amount.add(quantity);
                 history.setShoppingCart(shoppingCart);
 
                 // Updating the browsing history
@@ -166,15 +168,17 @@ public class StoreFrontController {
         try {
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
+            ArrayList<Integer> amount = new ArrayList<>();
 
             if (product.getProductInStock() > 0) {
                 list.add(product.getProductId());
+                amount.add(1);
 
                 // Updating Inventory
                 product.setProductInStock(product.getProductInStock() - 1);
             }
 
-            Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, product.getProductPrice());
+            Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, amount, product.getProductPrice());
 
             // TODO: send email to admin to confirm transaction
             // TODO: Add jasper Report

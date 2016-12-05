@@ -5,6 +5,7 @@ package com.evapps.Entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class History implements Serializable {
     private User user;
     @ManyToMany
     private Set<Product> browsingHistory;
+    private ArrayList<Integer> amount;
     @ManyToMany
     private Set<Product> shoppingCart;
 
@@ -31,6 +33,7 @@ public class History implements Serializable {
         this.setUser(user);
         this.setBrowsingHistory(new HashSet<>());
         this.setShoppingCart(new HashSet<>());
+        this.setAmount(new ArrayList<>());
     }
 
     // Getters and Setters
@@ -64,5 +67,13 @@ public class History implements Serializable {
 
     public void setShoppingCart(Set<Product> shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public ArrayList<Integer> getAmount() {
+        return amount;
+    }
+
+    public void setAmount(ArrayList<Integer> amount) {
+        this.amount = amount;
     }
 }

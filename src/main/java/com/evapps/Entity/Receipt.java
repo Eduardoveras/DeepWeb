@@ -25,6 +25,7 @@ public class Receipt implements Serializable {
     @ManyToOne
     private User user;
     private Timestamp transactionDate;
+    private ArrayList<Integer> amount;
     private ArrayList<Integer> productList;
     private Float total;
     private OrderStatus status;
@@ -34,11 +35,12 @@ public class Receipt implements Serializable {
 
     }
 
-    public Receipt(User user, ArrayList<Integer> productList, Float total){
+    public Receipt(User user, ArrayList<Integer> productList, ArrayList<Integer> amount, Float total){
         this.setFiscalCode(UUID.randomUUID().toString().split("-")[0].toUpperCase());
         this.setUser(user);
         this.setTransactionDate(new Timestamp(Calendar.getInstance().getTime().getTime())); // Today's Date and Current Time
         this.setProductList(productList);
+        this.setAmount(amount);
         this.setTotal(total);
         this.setStatus(OrderStatus.PENDING);
     }
@@ -89,5 +91,13 @@ public class Receipt implements Serializable {
 
     public void setTransactionDate(Timestamp transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public ArrayList<Integer> getAmount() {
+        return amount;
+    }
+
+    public void setAmount(ArrayList<Integer> amount) {
+        this.amount = amount;
     }
 }
