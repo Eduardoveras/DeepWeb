@@ -31,7 +31,7 @@
     <input type="hidden" name="item_name" value="Amazon Platano Stuff">
     <input type="hidden" name="amount" value="5.95">
     <input type="hidden" name="currency_code" value="USD">
-    <input type="hidden" name="shopping_url" value="localhost:8090/products">
+    <input type="hidden" value="localhost:8090/download_pdf" name="return">
 
 
     <!-- Display the payment button. -->
