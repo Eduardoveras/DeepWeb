@@ -80,7 +80,7 @@ public class User implements Serializable{
         this.lastName = lastName;
     }
 
-    public String getFullName() { return firstName.toUpperCase() + " " + lastName; }
+    public String getFullName() { return firstName.toUpperCase() + " " + lastName.toUpperCase(); }
 
     public String getPassword() {
         return password;
