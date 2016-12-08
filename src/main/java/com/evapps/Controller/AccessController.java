@@ -14,8 +14,8 @@ import com.evapps.Service.CRUD.UpdateDataService;
 import com.evapps.Tools.Enums.AccountStatus;
 import com.evapps.Tools.Enums.OrderStatus;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
-import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 @Controller
@@ -102,17 +101,20 @@ public class AccessController {
             }
 
             Map<String, Object> params = new HashMap<>();
-            params.put("Title", "Transaction Report");
-            params.put("fiscalCode", fiscalCode);
+            params.put("FiscalCode", fiscalCode);
 
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+
+            JRDataSource data = new JRMapArrayDataSource(fetchTransactionDataSource());
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, data/*new JREmptyDataSource()*/);
 
             response.setContentType("application/x-pdf");
             response.setHeader("Content-disposition", "inline; filename=Transaction_Report_" + fiscalCode + ".pdf");
 
             final OutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+            response.reset(); //possibly cleans this stuff
         } catch (Exception exp){
             System.out.println(exp.getMessage());
         }
@@ -376,10 +378,11 @@ public class AccessController {
         try {
             // Updating Inventory
             Receipt receipt = RDS.findRegisteredTransaction(fiscalCode);
+            int count = 0;
             for (Integer productId:
                  receipt.getProductList()) {
                 Product product = RDS.findRegisteredProduct(productId);
-                product.setProductInStock(product.getProductInStock() + 1);
+                product.setProductInStock(product.getProductInStock() + receipt.getAmount().get(count));
                 UDS.updateRegisteredProduct(product);
             }
 
@@ -418,8 +421,6 @@ public class AccessController {
         return "redirect:/myHistory"; // TODO: Add error message
     }
 
-                                                                                                // TODO: PrintTransaction
-
     // Auxiliary Functions
     private Byte[] processImageFile(byte[] buffer) {
         Byte[] bytes = new Byte[buffer.length];
@@ -430,5 +431,38 @@ public class AccessController {
             bytes[i++] = b; // Autoboxing
 
         return bytes;
+    }
+
+    private Map[] fetchTransactionDataSource(){
+        HashMap[] rows = new HashMap[RDS.findAllRegisteredTransactions().size()];
+        int count = 0;
+
+        for (Receipt r:
+                RDS.findAllRegisteredTransactions()) {
+            HashMap data = new HashMap();
+            data.put("fiscal", r.getFiscalCode());
+            data.put("user_email", r.getUser().getEmail());
+            data.put("user_name", r.getUser().getFullName());
+            data.put("time", r.getTransactionDate().toString().substring(0, r.getTransactionDate().toString().length() - 2));
+            data.put("total", "$" + r.getTotal().toString());
+            data.put("content", formatReceiptBody(r.getProductList(), r.getAmount()));
+
+            rows[count++] = data;
+        }
+
+        return rows;
+    }
+
+    private String formatReceiptBody(ArrayList<Integer> products, ArrayList<Integer> amount){
+        String buffer = "";
+        int count = 0;
+
+        for (Integer i:
+             products) {
+            Product product = RDS.findRegisteredProduct(i);
+            buffer += amount.get(count++).toString() + "x " + product.getProductName() + " ------ $" + product.getProductPrice().toString() + "\n";
+        }
+
+        return buffer;
     }
 }

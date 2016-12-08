@@ -121,8 +121,6 @@ public class AdminController implements ErrorController {
             per = Permission.CONSUMER;
         }
 
-
-
         try {
             CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase(), shippingAddress,country,city, password,per );
 
