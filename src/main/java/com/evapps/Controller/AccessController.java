@@ -114,7 +114,7 @@ public class AccessController {
 
             final OutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-            response.reset(); //possibly cleans this stuff
+            response.reset(); // Possibly cleans this stuff
         } catch (Exception exp){
             System.out.println(exp.getMessage());
         }
@@ -288,10 +288,10 @@ public class AccessController {
                     // Saving transaction registry
                     productList.add(product.getProductId());
                     // Calculating total cost of transaction
-                    total += product.getProductPrice() * amount.get(count++);
+                    total += product.getProductPrice() * amount.get(count);
 
                     // Updating inventory
-                    product.setProductInStock(product.getProductInStock() - 1);
+                    product.setProductInStock(product.getProductInStock() - amount.get(count++));
                     UDS.updateRegisteredProduct(product);
                 }
             }
@@ -302,7 +302,6 @@ public class AccessController {
             Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, amount, total);
 
             // TODO: Send email to admin for order confirmation
-            // TODO: create downloadable Jasper Report of Transaction
             return "redirect:/download_pdf/transaction?fiscalCode=" + receipt.getFiscalCode();
 
             //return "redirect:/myHistory";
