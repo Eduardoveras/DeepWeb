@@ -95,30 +95,21 @@
                         <!-- / logo  -->
                         <!-- cart box -->
                         <div class="aa-cartbox">
-                            <a class="aa-cart-link" href="/cart">
-                                <span class="fa fa-shopping-basket"></span>
-                                <span class="aa-cart-title">SHOPPING CART</span>
-                                <span class="aa-cart-notify">${shoppingCart?size}</span>
-                            </a>
-                            <div class="aa-cartbox-summary">
-                                <ul>
-                                    <#list shoppingCart as item>
-                                    <li>
-                                        <a class="aa-cartbox-img" href="#"><img src="img/woman-small-2.jpg" alt="img"></a>
-                                        <div class="aa-cartbox-info">
-                                            <h4><a href="#">${item.getProductName()}</a></h4>
-                                            <p>1 x $${item.getProductPrice()}</p>
-                                        </div>
-                                        <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                                    </li>
-                                    <#else>
-                                    <h2>There are no items in your cart</h2>
-                                    </#list>
-                                </ul>
-                                <#if shoppingCart?has_content>
-                                <a class="aa-cartbox-checkout aa-primary-btn" href="/checkout">Checkout</a>
-                                </#if>
-                            </div>
+                            <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                <!-- Identify your business so that you can collect the payments. -->
+                                <input type="hidden" name="business" value="eduardo.storm-facilitator@gmail.com">
+
+                                <!-- Specify a PayPal shopping cart View Cart button. -->
+                                <input type="hidden" name="cmd" value="_cart">
+                                <input type="hidden" name="display" value="1">
+
+                                <!-- Display the View Cart button. -->
+                                <input type="image" name="submit"
+                                       src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_viewcart_113x26.png"
+                                       alt="Add to Cart">
+                                <img alt="" width="1" height="1"
+                                     src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+                            </form>
                         </div>
                         <!-- / cart box -->
                         <!-- search box -->

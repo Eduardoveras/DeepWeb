@@ -2,7 +2,6 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
-import com.evapps.Service.Auxiliary.StripeService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -32,8 +31,6 @@ public class StoreFrontController {
     private ReadDataService RDS;
     @Autowired
     private UpdateDataService UDS;
-    @Autowired
-    private StripeService stripeService;
 
     // Gets
     @GetMapping("/")
@@ -79,6 +76,7 @@ public class StoreFrontController {
             model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
         else
             model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
+
 
         return new ModelAndView("StoreFront/checkout");
     }
@@ -155,9 +153,9 @@ public class StoreFrontController {
 
                 UDS.updateRegisteredUserHistory(history);
 
-                return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+                return "redirect:/products"; // TODO: this should go back to the origin - store page, or product detail
             } else
-                return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail with error message
+                return "redirect:/products"; // TODO: this should go back to the origin - store page, or product detail with error message
         } catch (Exception exp){
             //
         }
@@ -171,8 +169,6 @@ public class StoreFrontController {
             return "redirect:/login";
 
         try {
-
-
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
             ArrayList<Integer> amount = new ArrayList<>();
@@ -200,4 +196,14 @@ public class StoreFrontController {
         return "redirect:/"; // TODO: Add error handling
     }
 
-}
+
+    @PostMapping("/checkout")
+    public String checkOut() {
+
+        return "redirect:/";
+
+    }
+
+
+
+    }

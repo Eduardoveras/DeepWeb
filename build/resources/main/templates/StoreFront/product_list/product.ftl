@@ -59,13 +59,38 @@
                         <#list selection as product>
                             <li>
                                 <figure>
-                                    <form method="post" action="/add_to_cart" name="add-to-cart" id="add-to-cart">
-                                        <input type="hidden" name="productId" value="${product.getProductId()}">
-                                    </form>
+
                                     <a class="aa-product-img" href="#"><img src="img/women/girl-1.png"
                                                                             alt="polo shirt img"></a>
-                                    <a class="aa-add-card-btn" onclick="$('#add-to-cart').submit();"><span class="fa fa-shopping-cart" ></span>Add To
+                                    <a class="aa-add-card-btn" onclick="$('#add-to-cart${product.getProductId()}').submit();"><span class="fa fa-shopping-cart" ></span>Add To
                                         Cart</a>
+
+
+
+
+                                    <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" id="add-to-cart${product.getProductId()}">
+                                        <input type="hidden" name="productId" value="${product.getProductId()}">
+                                        <!-- Identify your business so that you can collect the payments. -->
+                                        <input type="hidden" name="business" value="eduardo.storm-facilitator@gmail.com">
+                                        <!-- Specify a PayPal Shopping Cart Add to Cart button. -->
+                                        <input type="hidden" name="cmd" value="_cart">
+                                        <input type="hidden" name="add" value="1">
+                                        <!-- Specify details about the item that buyers will purchase. -->
+                                        <input type="hidden" name="item_name" value="${product.getProductName()}">
+                                        <input type="hidden" name="amount" value="${product.getProductPrice()}">
+                                        <input type="hidden" name="currency_code" value="USD">
+                                        <input type="hidden" name="shopping_url" value="localhost:8090/products">
+
+                                        <!-- Display the payment button. -->
+                                        <input type="image" name="submit"
+                                               src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_addtocart_120x26.png"
+                                               alt="Add to Cart">
+                                        <img alt="" width="1" height="1"
+                                             src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif">
+                                    </form>
+
+
+
 
                                     <figcaption>
                                         <h4 class="aa-product-title"><a href="/product-detail/${product.getProductId()}">${product.getProductName()}</a></h4>
@@ -74,18 +99,6 @@
                                     </figcaption>
                                 </figure>
                                 <div class="aa-product-hvr-content">
-                                    <form action="/payment" method="POST">
-                                        <script
-                                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                                data-key="pk_test_b5iYk9e08nHNf9vy9EaiIGGK"
-                                                data-amount="${product.getProductPrice().replace(".","")}"
-                                                data-name="Amzon Platano(Buy Now)"
-                                                data-description="Widget"
-                                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                                data-locale="auto">
-                                        </script>
-                                        <input type="hidden" value="${product.getProductId()}" name="productId" >
-                                    </form>
                                     <a href="/one_click/quick_buy/${product.getProductId()}" data-toggle="tooltip" data-placement="top" title="Buy Now"><span
                                             class="fa fa-shopping-cart"></span></a>
                                     <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span
