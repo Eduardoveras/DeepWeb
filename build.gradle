@@ -77,6 +77,8 @@ dependencies {
 	compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.0'
 	//jasperreports 'net.sf.jasperreports:jasperreports:5.6.0',
 			//'org.codehaus.groovy:groovy-all:2.3.6'
+	// https://mvnrepository.com/artifact/com.stripe/stripe-java
+	compile group: 'com.stripe', name: 'stripe-java', version: '3.3.0'
 }
 
 task wrapper(type: Wrapper) {

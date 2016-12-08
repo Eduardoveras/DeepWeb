@@ -10,7 +10,7 @@
         <div class="right_col" role="main">
             <div class="">
                 <div class="row">
-                    <#include "_paypal_test.ftl">
+                    <#include "_stripe_test.ftl">
 
                 </div>
             </div>

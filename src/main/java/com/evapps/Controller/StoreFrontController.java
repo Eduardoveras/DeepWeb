@@ -3,6 +3,7 @@ package com.evapps.Controller;
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.Receipt;
+import com.evapps.Service.Auxiliary.StripeService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +32,8 @@ public class StoreFrontController {
     private ReadDataService RDS;
     @Autowired
     private UpdateDataService UDS;
+    @Autowired
+    private StripeService stripeService;
 
     // Gets
     @GetMapping("/")
@@ -124,7 +126,7 @@ public class StoreFrontController {
 
     // Posts
     @PostMapping("/add_to_cart")
-    public String addToCart(@RequestParam("productId") String productId, @RequestParam("amount") Integer quantity){
+    public String addToCart(@RequestParam("productId") String productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -138,10 +140,14 @@ public class StoreFrontController {
                 ArrayList<Integer> amount = history.getAmount();
                 Set<Product> browsingHistory = history.getBrowsingHistory();
 
+                if (amount == null)
+                    amount = new ArrayList<>(); // fail safe
+
                 // Adding to cart
                 shoppingCart.add(product);
-                amount.add(quantity);
+                amount.add(1);
                 history.setShoppingCart(shoppingCart);
+                history.setAmount(amount);
 
                 // Updating the browsing history
                 browsingHistory.add(product);
@@ -160,20 +166,23 @@ public class StoreFrontController {
     }
 
     @PostMapping("/one_click/quick_buy")
-    public String oneClickBuy(@RequestParam("productId") Integer productId){
-
+    public String oneClickBuy(@RequestParam("productId") Integer productId,@RequestParam("stripeToken") String stripeToken,@RequestParam("stripeEmail") String stripeEmail){
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
         try {
+
+
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
             ArrayList<Integer> amount = new ArrayList<>();
 
             if (product.getProductInStock() > 0) {
+
                 list.add(product.getProductId());
                 amount.add(1);
 
+                //stripeService.makeTransacction()
                 // Updating Inventory
                 product.setProductInStock(product.getProductInStock() - 1);
             }
