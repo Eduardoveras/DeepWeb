@@ -23,12 +23,8 @@ dependencyManagement {
 	}
 }
 
-
-
 group 'myapp'
 version = '0.0.1-SNAPSHOT'
-
-
 
 jar {
 	baseName = 'myapp'
@@ -43,8 +39,10 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	jcenter()
+	maven{url "http://jasperreports.sourceforge.net/maven2/"}
+	maven{url "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/"}
 }
-
 
 dependencies {
 	// tag::jetty[]
@@ -75,13 +73,13 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.sendgrid/sendgrid-java
 	compile 'com.sendgrid:sendgrid-java:3.1.0'
 	compile 'com.amazonaws:aws-java-sdk-s3'
+	// https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
+	compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.0'
+	//jasperreports 'net.sf.jasperreports:jasperreports:5.6.0',
+			//'org.codehaus.groovy:groovy-all:2.3.6'
 	// https://mvnrepository.com/artifact/com.stripe/stripe-java
 	compile group: 'com.stripe', name: 'stripe-java', version: '3.3.0'
-
-
 }
-
-
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
