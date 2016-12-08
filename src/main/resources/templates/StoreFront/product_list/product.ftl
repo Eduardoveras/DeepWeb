@@ -59,12 +59,13 @@
                         <#list selection as product>
                             <li>
                                 <figure>
-                                    <form method="post" action="/add_to_cart" name="add-to-cart" id="add-to-cart">
+                                    <form method="post" action="/add_to_cart" name="add-to-cart" id="add-to-cart${product.getProductId()}">
                                         <input type="hidden" name="productId" value="${product.getProductId()}">
+
                                     </form>
                                     <a class="aa-product-img" href="#"><img src="img/women/girl-1.png"
                                                                             alt="polo shirt img"></a>
-                                    <a class="aa-add-card-btn" onclick="$('#add-to-cart').submit();"><span class="fa fa-shopping-cart" ></span>Add To
+                                    <a class="aa-add-card-btn" onclick="$('#add-to-cart${product.getProductId()}').submit();"><span class="fa fa-shopping-cart" ></span>Add To
                                         Cart</a>
 
                                     <figcaption>
@@ -74,18 +75,6 @@
                                     </figcaption>
                                 </figure>
                                 <div class="aa-product-hvr-content">
-                                    <form action="/payment" method="POST">
-                                        <script
-                                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                                data-key="pk_test_b5iYk9e08nHNf9vy9EaiIGGK"
-                                                data-amount="999"
-                                                data-name="Amzon Platano(Buy Now)"
-                                                data-description="Widget"
-                                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                                data-locale="auto">
-                                        </script>
-                                        <input type="hidden" value="${product.getProductId()}" name="productId" >
-                                    </form>
                                     <a href="/one_click/quick_buy/${product.getProductId()}" data-toggle="tooltip" data-placement="top" title="Buy Now"><span
                                             class="fa fa-shopping-cart"></span></a>
                                     <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><span

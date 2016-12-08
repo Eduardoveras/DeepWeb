@@ -41,6 +41,7 @@ public class AccessController {
     @Autowired
     private UpdateDataService UDS;
 
+
     // Gets
     @GetMapping("/login")
     public ModelAndView fetchLoginView(){
@@ -114,7 +115,6 @@ public class AccessController {
 
             final OutputStream outputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-            response.reset(); // Possibly cleans this stuff
         } catch (Exception exp){
             System.out.println(exp.getMessage());
         }
