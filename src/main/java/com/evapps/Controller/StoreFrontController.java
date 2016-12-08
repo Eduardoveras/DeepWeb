@@ -140,10 +140,14 @@ public class StoreFrontController {
                 ArrayList<Integer> amount = history.getAmount();
                 Set<Product> browsingHistory = history.getBrowsingHistory();
 
+                if (amount == null)
+                    amount = new ArrayList<>(); // fail safe
+
                 // Adding to cart
                 shoppingCart.add(product);
                 amount.add(1);
                 history.setShoppingCart(shoppingCart);
+                history.setAmount(amount);
 
                 // Updating the browsing history
                 browsingHistory.add(product);
