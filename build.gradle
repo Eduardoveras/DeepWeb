@@ -75,6 +75,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.sendgrid/sendgrid-java
 	compile 'com.sendgrid:sendgrid-java:3.1.0'
 	compile 'com.amazonaws:aws-java-sdk-s3'
+	// https://mvnrepository.com/artifact/com.stripe/stripe-java
+	compile group: 'com.stripe', name: 'stripe-java', version: '3.3.0'
+
+
 }
 
 

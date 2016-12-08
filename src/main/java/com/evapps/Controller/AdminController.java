@@ -136,6 +136,15 @@ public class AdminController implements ErrorController {
         return "redirect:/register_page"; // TODO: Add error message
     }
 
+    @PostMapping("/payment")
+    public String payment (@RequestParam("stripeToken") String amm,@RequestParam("stripeEmail") String curr)
+    {
+        System.out.println("FUCK THE MONETARY SYSTEM");
+        System.out.println(amm);
+        System.out.println(curr);
+        return "redirect:/admin/";
+    }
+
     @PostMapping("/add_new_product")
     public String registerNewProduct(@RequestParam("name") String productName, @RequestParam("supplier") String supplier, @RequestParam("description") String productDescription, @RequestParam("price") Float productPrice, @RequestParam("quantity") Integer productInStock){
 

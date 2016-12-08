@@ -2,6 +2,7 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
+import com.evapps.Service.Auxiliary.StripeService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -31,6 +32,8 @@ public class StoreFrontController {
     private ReadDataService RDS;
     @Autowired
     private UpdateDataService UDS;
+    @Autowired
+    private StripeService stripeService;
 
     // Gets
     @GetMapping("/")
@@ -123,7 +126,7 @@ public class StoreFrontController {
 
     // Posts
     @PostMapping("/add_to_cart")
-    public String addToCart(@RequestParam("productId") String productId, @RequestParam("amount") Integer quantity){
+    public String addToCart(@RequestParam("productId") String productId){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -139,7 +142,7 @@ public class StoreFrontController {
 
                 // Adding to cart
                 shoppingCart.add(product);
-                amount.add(quantity);
+                amount.add(1);
                 history.setShoppingCart(shoppingCart);
 
                 // Updating the browsing history
@@ -159,20 +162,23 @@ public class StoreFrontController {
     }
 
     @PostMapping("/one_click/quick_buy")
-    public String oneClickBuy(@RequestParam("productId") Integer productId){
-
+    public String oneClickBuy(@RequestParam("productId") Integer productId,@RequestParam("stripeToken") String stripeToken,@RequestParam("stripeEmail") String stripeEmail){
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
         try {
+
+
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
             ArrayList<Integer> amount = new ArrayList<>();
 
             if (product.getProductInStock() > 0) {
+
                 list.add(product.getProductId());
                 amount.add(1);
 
+                //stripeService.makeTransacction()
                 // Updating Inventory
                 product.setProductInStock(product.getProductInStock() - 1);
             }
