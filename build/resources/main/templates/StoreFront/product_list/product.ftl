@@ -78,7 +78,7 @@
                                         <script
                                                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                                 data-key="pk_test_b5iYk9e08nHNf9vy9EaiIGGK"
-                                                data-amount="999"
+                                                data-amount="${product.getProductPrice().replace(".","")}"
                                                 data-name="Amzon Platano(Buy Now)"
                                                 data-description="Widget"
                                                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
