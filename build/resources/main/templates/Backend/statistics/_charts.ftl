@@ -21,10 +21,17 @@
             <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
                 <canvas id="suppliers"></canvas>
             </div>
+
             <br>
 
             <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
                 <canvas id="avePurchase"></canvas>
+            </div>
+
+            <br>
+
+            <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+                <canvas id="items"></canvas>
             </div>
 
             <script type="text/javascript">
@@ -33,6 +40,7 @@
                 google.charts.setOnLoadCallback(drawPurchaseBarChart());
                 google.charts.setOnLoadCallback(drawSupplierPieChart());
                 google.charts.setOnLoadCallback(drawAveragePurchaseBarChart());
+                google.charts.setOnLoadCallback(drawAverageItemBarChart());
 
                 function drawProductViewBarChart() {
                     var data = google.visualization.arrayToDataTable([
@@ -123,6 +131,29 @@
                     };
 
                     var chart = new google.visualization.BarChart(document.getElementById('avePurchase'));
+                    chart.draw(data, options);
+                }
+
+                function drawAverageItemBarChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['User', 'Items Bought', { role: "style" }],
+                    <#list averageItems as average>
+                        <#if average?is_last>
+                                [${average}]
+                        <#else>
+                                [${average}],
+                        </#if>
+                    </#list>
+                    ]);
+
+                    var options = {
+                        title: 'Average Items Purchased per User',
+                        'min-width':300,
+                        'min-height':300,
+                        legend: 'none'
+                    };
+
+                    var chart = new google.visualization.BarChart(document.getElementById('items'));
                     chart.draw(data, options);
                 }
             </script>

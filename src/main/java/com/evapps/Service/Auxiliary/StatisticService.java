@@ -127,10 +127,11 @@ public class StatisticService {
         return null;
     }
 
-    public Map<String, Float> userAverageNumberOfItemPurchase(){
+    public ArrayList<String> userAverageNumberOfItemPurchase(){
 
         try {
             Map<String, Float> statistics = fetchUserLegend();
+            ArrayList<String> buffer = new ArrayList<>();
 
             for (String email: statistics.keySet()) {
                 int count = 0;
@@ -142,7 +143,10 @@ public class StatisticService {
                 statistics.replace(email, statistics.get(email)/count);
             }
 
-            return statistics;
+            for (String email: statistics.keySet())
+                buffer.add("'" + email + "', " + Float.toString(statistics.get(email)) + ", 'color: silver'");
+
+            return buffer;
         } catch (Exception exp) {
             //
         }
