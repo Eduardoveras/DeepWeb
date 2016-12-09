@@ -29,7 +29,7 @@
 
     <!-- Specify details about the item that buyers will purchase. -->
     <input type="hidden" name="item_name" value="Amazon Platano Stuff">
-    <input type="hidden" name="amount" value="5.95">
+    <input type="hidden" name="amount" value="${total}">
     <input type="hidden" name="currency_code" value="USD">
     <input type="hidden" value="localhost:8090/download_pdf" name="return">
     <input type="hidden" name="custom" value=""/>
@@ -329,7 +329,7 @@
                                             <tfoot>
                                             <tr>
                                                 <th>Total</th>
-                                                <td>$785</td>
+                                                <td>$${total}</td>
                                             </tr>
                                             </tfoot>
                                         </table>
