@@ -2,6 +2,7 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.Receipt;
 import com.evapps.Service.CRUD.ReadDataService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,11 +12,21 @@ import java.util.List;
  */
 
 @RestController
-class GreetingController {
-    private static ReadDataService RDS;
+public class AppController {
 
-    @GetMapping("/greeting")
-    public static List<Receipt> greeting(@RequestParam(value = "name", defaultValue = "World") String name){
-        return RDS.findAllRegisteredTransactions();
+    @Autowired
+    private ReadDataService RDS;
+    @Autowired
+    private AdminController adminController;
+
+    @RequestMapping("/rest/login")
+    public boolean login(@RequestParam(value = "email", defaultValue = "ev@gmail.com") String email,
+                         @RequestParam(value = "password") String password){
+        return RDS.findRegisteredUserAccount(email,password);
+    }
+
+    @RequestMapping("/rest/transactions")
+    public List<Receipt> tranaction(@RequestParam(value = "email", defaultValue = "ev@gmail.com") String email){
+        return RDS.findRegisteredUserTransactions(email);
     }
 }
