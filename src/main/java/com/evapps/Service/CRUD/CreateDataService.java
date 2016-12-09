@@ -55,6 +55,25 @@ public class CreateDataService
         }
     }
 
+    public Product registerNewProduct(Product p) throws Exception{
+
+        if (p.getProductPrice() <= 0.00f)
+            throw new IllegalArgumentException("All price must be positive decimal numbers");
+
+        if (p.getProductInStock() < 0)
+            throw new IllegalArgumentException("There must be at least one unit registered");
+
+        try {
+            return productRepository.save(p);
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (NullArgumentException exp){
+            throw new NullArgumentException("Null Argument Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
     // Receipt Creation
     public Receipt registerTransaction(String email, ArrayList<Integer> productList, ArrayList<Integer> amount, Float total) throws Exception {
 

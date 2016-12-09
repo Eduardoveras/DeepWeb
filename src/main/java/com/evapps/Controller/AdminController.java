@@ -17,15 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.management.relation.Role;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
+import java.io.IOException;
 
 @Controller
 public class AdminController implements ErrorController {
@@ -144,7 +145,7 @@ public class AdminController implements ErrorController {
     }
 
     @PostMapping("/add_new_product")
-    public String registerNewProduct(@RequestParam("name") String productName, @RequestParam("supplier") String supplier, @RequestParam("description") String productDescription, @RequestParam("price") Float productPrice, @RequestParam("quantity") Integer productInStock){
+    public String registerNewProduct(@RequestParam("name") String productName, @RequestParam("supplier") String supplier, @RequestParam("description") String productDescription, @RequestParam("price") Float productPrice, @RequestParam("quantity") Integer productInStock,@RequestParam("file") MultipartFile picture){
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
@@ -153,7 +154,10 @@ public class AdminController implements ErrorController {
             return "redirect:/login"; // User must be an admin
 
         try {
-            CDS.registerNewProduct(productName, supplier, productDescription, productPrice, productInStock);
+            Product p = new Product(productName,supplier,productDescription,productPrice,productInStock);
+            p.setPhoto(processImageFile(picture.getBytes()));
+            CDS.registerNewProduct(p);
+
             return "redirect:/admin/inventory";
         } catch (Exception exp){
             //
