@@ -6,6 +6,7 @@ package com.evapps.Controller;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
+import com.evapps.Service.Auxiliary.StatisticService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
@@ -38,6 +39,8 @@ public class AdminController implements ErrorController {
     private UpdateDataService UDS;
     @Autowired
     private DeleteDataService DDS;
+    @Autowired
+    private StatisticService SS;
     private static final String ERR_PATH = "/error";
 
     @RequestMapping(value = ERR_PATH)
@@ -119,6 +122,20 @@ public class AdminController implements ErrorController {
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
 
         return new ModelAndView("/Backend/transactions/transactions");
+    }
+
+    @GetMapping("/admin/statistics")
+    public ModelAndView viewStatistics(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return new ModelAndView("redirect:/login");
+
+        model.addAttribute("productsView", SS.productViewStatistics());
+
+        return new ModelAndView("/Backend/statistics/statistics");
     }
 
     // Posts
