@@ -10,7 +10,7 @@
         <div class="right_col" role="main">
             <div class="">
                 <div class="row">
-
+                <#include "_charts.ftl">
 
                 </div>
             </div>
