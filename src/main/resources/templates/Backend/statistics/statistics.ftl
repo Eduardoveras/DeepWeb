@@ -1,4 +1,4 @@
-<#include "/Backend/layouts/header.ftl">
+<#include "_stats_header.ftl">
 
 <body class="nav-md">
 <#include  "/Backend/layouts/_loader.ftl">

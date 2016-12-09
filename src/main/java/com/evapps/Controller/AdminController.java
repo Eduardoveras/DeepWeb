@@ -132,9 +132,6 @@ public class AdminController implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
-        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
-            return new ModelAndView("redirect:/login");
-
         model.addAttribute("productsView", SS.productViewStatistics());
         model.addAttribute("purchaseStatistics", SS.productPurchaseStatistics());
         model.addAttribute("supplierStatistics", SS.productSupplierStatistics());
