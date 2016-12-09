@@ -6,6 +6,7 @@ package com.evapps.Controller;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
+import com.evapps.Service.Auxiliary.StatisticService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
@@ -40,6 +41,8 @@ public class AdminController implements ErrorController {
     private UpdateDataService UDS;
     @Autowired
     private DeleteDataService DDS;
+    @Autowired
+    private StatisticService SS;
     private static final String ERR_PATH = "/error";
 
     @RequestMapping(value = ERR_PATH)
@@ -51,6 +54,9 @@ public class AdminController implements ErrorController {
     public ModelAndView index(Model model){
 
         if (!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("userRole", RDS.getCurrentLoggedUser().getRole());
@@ -66,7 +72,11 @@ public class AdminController implements ErrorController {
 
     @GetMapping("/admin/inventory")
     public ModelAndView viewInventory(Model model){
+
         if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
@@ -76,7 +86,11 @@ public class AdminController implements ErrorController {
 
     @GetMapping("/admin/inventory/edit/{id}")
     public ModelAndView editProduct(Model model,@PathParam("id") String productId ){
+
         if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("userID", productId);
@@ -90,6 +104,9 @@ public class AdminController implements ErrorController {
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("userList", RDS.findAllRegisteredAccounts());
 
         return new ModelAndView("Backend/users/allUsers");
@@ -101,9 +118,30 @@ public class AdminController implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
 
         return new ModelAndView("/Backend/transactions/transactions");
+    }
+
+    @GetMapping("/admin/statistics")
+    public ModelAndView viewStatistics(Model model){
+
+        if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return new ModelAndView("redirect:/login");
+
+        model.addAttribute("productsView", SS.productViewStatistics());
+        model.addAttribute("purchaseStatistics", SS.productPurchaseStatistics());
+        model.addAttribute("supplierStatistics", SS.productSupplierStatistics());
+        model.addAttribute("averagePurchase", SS.userAveragePurchaseByDollar());
+        model.addAttribute("averageItems", SS.userAverageNumberOfItemPurchase());
+
+        return new ModelAndView("/Backend/statistics/statistics");
     }
 
     // Posts
@@ -112,6 +150,10 @@ public class AdminController implements ErrorController {
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login";
+
         Permission per;
         if (role.equals("ADMIN"))
         {
@@ -206,6 +248,9 @@ public class AdminController implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login";
+
         try {
             DDS.deleteRegisteredProduct(productId);
             return "redirect:/admin/inventory";
@@ -216,7 +261,6 @@ public class AdminController implements ErrorController {
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    // TODO: restockProduct
     @PostMapping("/restock/{productId}")
     public String restockProduct(@PathParam("productId") Integer productId, @RequestParam("addition") Integer addition){
 
@@ -357,9 +401,6 @@ public class AdminController implements ErrorController {
 
         return "redirect:/admin/users"; // TODO: Add error handling
     }
-
-                                                                                                    // TODO: printTransaction
-                                                                                                    // TODO: downloadReport
 
     // Auxiliary Functions
     private Byte[] processImageFile(byte[] buffer) {

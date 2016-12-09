@@ -55,6 +55,6 @@
         </div>
     </div>
 </div>
-<!--I Know this is wrong, i just dont care-->
+<!--I Know this is wrong, i just don't care-->
 <br><br><br><br><br><br><br><br><br>
 
