@@ -134,6 +134,7 @@ public class AdminController implements ErrorController {
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("productsView", SS.productViewStatistics());
+        model.addAttribute("purchaseStatistics", SS.productPurchaseStatistics());
 
         return new ModelAndView("/Backend/statistics/statistics");
     }

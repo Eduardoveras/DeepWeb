@@ -45,7 +45,7 @@ public class StatisticService {
 
             for (Integer i:
                  statistic.keySet())
-                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "', " + statistic.get(i).toString() + ", '#b87333'");
+                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "', " + statistic.get(i).toString() + ", 'color: #b87333'");
 
             return buffer;
         } catch (Exception exp) {
@@ -55,16 +55,21 @@ public class StatisticService {
         return null;
     }
 
-    public Map<Integer, Integer> productPurchaseStatistics(){
+    public ArrayList<String> productPurchaseStatistics(){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
+        ArrayList<String> buffer = new ArrayList<>();
 
         try {
             for (Receipt receipt: receiptRepository.findAll())
                 for (Integer p: receipt.getProductList())
                     statistic.replace(p, statistic.get(p) + 1);
 
-            return statistic;
+            for (Integer i:
+                 statistic.keySet())
+                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "', " + statistic.get(i).toString() + "', 'color: gold'");
+
+            return buffer;
         } catch (Exception exp) {
             //
         }
