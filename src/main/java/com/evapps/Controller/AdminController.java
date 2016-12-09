@@ -136,6 +136,7 @@ public class AdminController implements ErrorController {
         model.addAttribute("productsView", SS.productViewStatistics());
         model.addAttribute("purchaseStatistics", SS.productPurchaseStatistics());
         model.addAttribute("supplierStatistics", SS.productSupplierStatistics());
+        model.addAttribute("averagePurchase", SS.userAveragePurchaseByDollar());
 
         return new ModelAndView("/Backend/statistics/statistics");
     }

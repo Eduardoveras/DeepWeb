@@ -21,12 +21,18 @@
             <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
                 <canvas id="suppliers"></canvas>
             </div>
+            <br>
+
+            <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+                <canvas id="avePurchase"></canvas>
+            </div>
 
             <script type="text/javascript">
                 google.charts.load('current', {'packages':['geochart','corechart','line',"calendar"]});
                 google.charts.setOnLoadCallback(drawProductViewBarChart());
                 google.charts.setOnLoadCallback(drawPurchaseBarChart());
                 google.charts.setOnLoadCallback(drawSupplierPieChart());
+                google.charts.setOnLoadCallback(drawAveragePurchaseBarChart());
 
                 function drawProductViewBarChart() {
                     var data = google.visualization.arrayToDataTable([
@@ -94,6 +100,29 @@
                     };
 
                     var chart = new google.visualization.PieChart(document.getElementById('suppliers'));
+                    chart.draw(data, options);
+                }
+
+                function drawAveragePurchaseBarChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['User', 'Dollars Spent', { role: "style" }],
+                    <#list averagePurchase as average>
+                        <#if average?is_last>
+                                [${average}]
+                        <#else>
+                                [${average}],
+                        </#if>
+                    </#list>
+                    ]);
+
+                    var options = {
+                        title: 'Average Purchase per User',
+                        'min-width':300,
+                        'min-height':300,
+                        legend: 'none'
+                    };
+
+                    var chart = new google.visualization.BarChart(document.getElementById('avePurchase'));
                     chart.draw(data, options);
                 }
             </script>
