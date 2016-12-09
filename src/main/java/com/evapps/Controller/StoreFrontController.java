@@ -2,7 +2,7 @@ package com.evapps.Controller;
 
 import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
-import com.evapps.Service.Auxiliary.StripeService;
+import com.evapps.Entity.Receipt;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.ReadDataService;
 import com.evapps.Service.CRUD.UpdateDataService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,8 +31,6 @@ public class StoreFrontController {
     private ReadDataService RDS;
     @Autowired
     private UpdateDataService UDS;
-    @Autowired
-    private StripeService stripeService;
 
     // Gets
     @GetMapping("/")
@@ -79,6 +76,13 @@ public class StoreFrontController {
             model.addAttribute("shoppingCart", RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart());
         else
             model.addAttribute("shoppingCart", new HashSet<Product>()); // empty cart
+        float total=0;
+        for(Product i : RDS.findRegisteredUserHistory(RDS.getCurrentLoggedUser().getEmail()).getShoppingCart())
+        {
+            total+=i.getProductPrice();
+        }
+        model.addAttribute("total",total);
+
 
         return new ModelAndView("StoreFront/checkout");
     }
@@ -155,9 +159,9 @@ public class StoreFrontController {
 
                 UDS.updateRegisteredUserHistory(history);
 
-                return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+                return "redirect:/products"; // TODO: this should go back to the origin - store page, or product detail
             } else
-                return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail with error message
+                return "redirect:/products"; // TODO: this should go back to the origin - store page, or product detail with error message
         } catch (Exception exp){
             //
         }
@@ -171,8 +175,6 @@ public class StoreFrontController {
             return "redirect:/login";
 
         try {
-
-
             Product product = RDS.findRegisteredProduct(productId);
             ArrayList<Integer> list = new ArrayList<>();
             ArrayList<Integer> amount = new ArrayList<>();
@@ -182,22 +184,20 @@ public class StoreFrontController {
                 list.add(product.getProductId());
                 amount.add(1);
 
-                //stripeService.makeTransacction()
                 // Updating Inventory
                 product.setProductInStock(product.getProductInStock() - 1);
             }
 
-            CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, amount, product.getProductPrice());
+            Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), list, amount, product.getProductPrice());
 
             // TODO: send email to admin to confirm transaction
-            // TODO: Add jasper Report
+            return "redirect:/download_pdf/transaction?fiscalCode=" + receipt.getFiscalCode();
 
-            return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
+            //return "redirect:/"; // TODO: this should go back to the origin - store page, or product detail
         } catch (Exception exp){
             //
         }
 
         return "redirect:/"; // TODO: Add error handling
     }
-
 }

@@ -12,16 +12,13 @@ import com.evapps.Repository.ProductRepository;
 import com.evapps.Repository.ReceiptRepository;
 import com.evapps.Repository.UserRepository;
 import com.evapps.Service.Auxiliary.EncryptionService;
-import com.evapps.Tools.Enums.OrderStatus;
 import com.evapps.Tools.Enums.Permission;
 import freemarker.template.utility.NullArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
-import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
-import java.util.Set;
 
 @Service
 public class CreateDataService
@@ -49,6 +46,25 @@ public class CreateDataService
 
         try {
             return productRepository.save(new Product(productName, supplier, productDescription, productPrice, productInStock));
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (NullArgumentException exp){
+            throw new NullArgumentException("Null Argument Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
+    public Product registerNewProduct(Product p) throws Exception{
+
+        if (p.getProductPrice() <= 0.00f)
+            throw new IllegalArgumentException("All price must be positive decimal numbers");
+
+        if (p.getProductInStock() < 0)
+            throw new IllegalArgumentException("There must be at least one unit registered");
+
+        try {
+            return productRepository.save(p);
         } catch (PersistenceException exp){
             throw new PersistenceException("Persistence Error --> " + exp.getMessage());
         } catch (NullArgumentException exp){

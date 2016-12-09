@@ -14,7 +14,7 @@ import com.evapps.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,33 +33,43 @@ public class StatisticService {
 
     // Functions
     // Product related Statistics
-    public Map<Integer, Integer> productViewStatistics(boolean option){
+    public ArrayList<String> productViewStatistics(){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
+        ArrayList<String> buffer = new ArrayList<>();
 
         try {
             for (History history: historyRepository.findAll())
                 for (Product product: history.getBrowsingHistory())
                     statistic.replace(product.getProductId(), statistic.get(product.getProductId()) + 1);
 
-            return statistic;
+            for (Integer i:
+                 statistic.keySet())
+                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "', " + statistic.get(i).toString() + ", 'color: #b87333'");
+
+            return buffer;
         } catch (Exception exp) {
-            //
+            System.out.println();
         }
 
         return null;
     }
 
-    public Map<Integer, Integer> productPurchaseStatistics(){
+    public ArrayList<String> productPurchaseStatistics(){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
+        ArrayList<String> buffer = new ArrayList<>();
 
         try {
             for (Receipt receipt: receiptRepository.findAll())
                 for (Integer p: receipt.getProductList())
                     statistic.replace(p, statistic.get(p) + 1);
 
-            return statistic;
+            for (Integer i:
+                 statistic.keySet())
+                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "', " + statistic.get(i).toString() + "', 'color: gold'");
+
+            return buffer;
         } catch (Exception exp) {
             //
         }
@@ -67,15 +77,20 @@ public class StatisticService {
         return null;
     }
 
-    public Map<String, Integer> productSupplierStatistics(){
+    public ArrayList<String> productSupplierStatistics(){
 
         try {
             Map<String, Integer> statistic = fetchSupplierLegend();
+            ArrayList<String> buffer = new ArrayList<>();
 
             for (Product product: productRepository.findAll())
                 statistic.replace(product.getSupplier(), statistic.get(product.getSupplier()) + 1);
 
-            return statistic;
+            for (String supplier:
+                 statistic.keySet())
+                buffer.add("'" + supplier + "', " + statistic.get(supplier).toString());
+
+            return buffer;
 
         } catch (Exception exp) {
             //
@@ -85,10 +100,11 @@ public class StatisticService {
     }
 
     // Transaction Related Functions
-    public Map<String, Float> userAveragePurchaseByDollar(){
+    public ArrayList<String> userAveragePurchaseByDollar(){
 
         try {
             Map<String, Float> statistics = fetchUserLegend();
+            ArrayList<String> buffer = new ArrayList<>();
 
             for (String email: statistics.keySet()) {
                 int count = 0;
@@ -100,7 +116,10 @@ public class StatisticService {
                 statistics.replace(email, statistics.get(email)/count);
             }
 
-            return statistics;
+            for (String email: statistics.keySet())
+                buffer.add("'" + email + "', " + Float.toString(statistics.get(email)) + ", 'color: silver'");
+
+            return buffer;
         } catch (Exception exp) {
             //
         }
@@ -108,10 +127,11 @@ public class StatisticService {
         return null;
     }
 
-    public Map<String, Float> userAverageNumberOfItemPurchase(){
+    public ArrayList<String> userAverageNumberOfItemPurchase(){
 
         try {
             Map<String, Float> statistics = fetchUserLegend();
+            ArrayList<String> buffer = new ArrayList<>();
 
             for (String email: statistics.keySet()) {
                 int count = 0;
@@ -123,7 +143,10 @@ public class StatisticService {
                 statistics.replace(email, statistics.get(email)/count);
             }
 
-            return statistics;
+            for (String email: statistics.keySet())
+                buffer.add("'" + email + "', " + Float.toString(statistics.get(email)) + ", 'color: silver'");
+
+            return buffer;
         } catch (Exception exp) {
             //
         }
