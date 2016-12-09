@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.management.relation.Role;
 import javax.websocket.server.PathParam;
 
 @Controller
@@ -52,6 +51,9 @@ public class AdminController implements ErrorController {
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("userRole", RDS.getCurrentLoggedUser().getRole());
         model.addAttribute("user", RDS.getSessionAttr("user"));
 
@@ -65,7 +67,11 @@ public class AdminController implements ErrorController {
 
     @GetMapping("/admin/inventory")
     public ModelAndView viewInventory(Model model){
+
         if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("selection", RDS.findAllRegisteredProducts());
@@ -75,7 +81,11 @@ public class AdminController implements ErrorController {
 
     @GetMapping("/admin/inventory/edit/{id}")
     public ModelAndView editProduct(Model model,@PathParam("id") String productId ){
+
         if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("userID", productId);
@@ -89,6 +99,9 @@ public class AdminController implements ErrorController {
         if (!RDS.isUserLoggedIn())
             return new ModelAndView("redirect:/login");
 
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return new ModelAndView("redirect:/login");
+
         model.addAttribute("userList", RDS.findAllRegisteredAccounts());
 
         return new ModelAndView("Backend/users/allUsers");
@@ -98,6 +111,9 @@ public class AdminController implements ErrorController {
     public ModelAndView viewTransactions(Model model){
 
         if(!RDS.isUserLoggedIn())
+            return new ModelAndView("redirect:/login");
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
             return new ModelAndView("redirect:/login");
 
         model.addAttribute("transactions", RDS.findAllRegisteredTransactions());
@@ -111,6 +127,10 @@ public class AdminController implements ErrorController {
 
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
+
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login";
+
         Permission per;
         if (role.equals("ADMIN"))
         {
@@ -202,6 +222,9 @@ public class AdminController implements ErrorController {
         if(!RDS.isUserLoggedIn())
             return "redirect:/login";
 
+        if (RDS.getCurrentLoggedUser().getRole() != Permission.ADMIN)
+            return "redirect:/login";
+
         try {
             DDS.deleteRegisteredProduct(productId);
             return "redirect:/admin/inventory";
@@ -212,7 +235,6 @@ public class AdminController implements ErrorController {
         return "redirect:/admin/inventory"; // TODO: Add error handling
     }
 
-    // TODO: restockProduct
     @PostMapping("/restock/{productId}")
     public String restockProduct(@PathParam("productId") Integer productId, @RequestParam("addition") Integer addition){
 
@@ -353,9 +375,6 @@ public class AdminController implements ErrorController {
 
         return "redirect:/admin/users"; // TODO: Add error handling
     }
-
-                                                                                                    // TODO: printTransaction
-                                                                                                    // TODO: downloadReport
 
     // Auxiliary Functions
     private Byte[] processImageFile(byte[] buffer) {
