@@ -29,7 +29,8 @@
                     <li><a href="/admin/"><i  class="fa fa-plus-square-o"></i> <@spring.message "dashboard" /> <span ></span></a></li>
                     <li><a href="/admin/inventory" ><i class="fa fa-shopping-basket"></i> <@spring.message "products" />  <span ></span></a></li>
                     <li><a href="/admin/users" ><i class="fa fa-user-md"></i> <@spring.message "users" />  <span ></span></a></li>
-                    <li><a href="/admin/transactions" ><i class="fa fa-credit-card"></i> transacctions  <span ></span></a></li>
+                    <li><a href="/admin/transactions" ><i class="fa fa-credit-card"></i> Transactions  <span ></span></a></li>
+                    <li><a href="/admin/statistics" ><i class="fa fa-credit-card"></i> Statistics  <span ></span></a></li>
                 </ul>
             </div>
         </div>
