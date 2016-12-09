@@ -14,6 +14,7 @@ import com.evapps.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,16 +33,22 @@ public class StatisticService {
 
     // Functions
     // Product related Statistics
-    public Map<Integer, Integer> productViewStatistics(boolean option){
+    public ArrayList<String> productViewStatistics(){
 
         Map<Integer, Integer> statistic = fetchProductLegend();
+        ArrayList<String> buffer = new ArrayList<>();
 
         try {
             for (History history: historyRepository.findAll())
                 for (Product product: history.getBrowsingHistory())
                     statistic.replace(product.getProductId(), statistic.get(product.getProductId()) + 1);
 
-            return statistic;
+            for (Integer i:
+                 statistic.values()) {
+                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "'," + statistic.get(i).toString());
+            }
+
+            return buffer;
         } catch (Exception exp) {
             //
         }
