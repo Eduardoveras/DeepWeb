@@ -36,12 +36,16 @@ VALUES ('paulina@gmail.com', 'Paulina', 'La Mejor', '81dc9bdb52d04dc20036dbd8313
 INSERT INTO history (history_id, user_email) VALUES (9, 'paulina@gmail.com');
 INSERT INTO history_shopping_cart (history_history_id, shopping_cart_product_id) VALUES (9,7);
 INSERT INTO history_shopping_cart (history_history_id, shopping_cart_product_id) VALUES (9,5);
+INSERT INTO history_browsing_history (history_history_id, browsing_history_product_id) VALUES (9,7);
+INSERT INTO history_browsing_history (history_history_id, browsing_history_product_id) VALUES (9,5);
 
 INSERT INTO users (email, first_name, last_name, password, role, shipping_address, city, country, status)
 VALUES ('adelso@gmail.com', 'Adelso', 'Tejada', '81dc9bdb52d04dc20036dbd8313ed055', 2, 'Kenskoff', 'Port-au-Prince', 'Haiti', 0);
 INSERT INTO history (history_id, user_email) VALUES (10, 'adelso@gmail.com');
 INSERT INTO history_shopping_cart (history_history_id, shopping_cart_product_id) VALUES (10,6);
 INSERT INTO history_shopping_cart (history_history_id, shopping_cart_product_id) VALUES (10,4);
+INSERT INTO history_browsing_history (history_history_id, browsing_history_product_id) VALUES (10,6);
+INSERT INTO history_browsing_history (history_history_id, browsing_history_product_id) VALUES (10,4);
 
 
 

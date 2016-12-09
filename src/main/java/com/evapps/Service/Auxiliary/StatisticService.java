@@ -44,13 +44,12 @@ public class StatisticService {
                     statistic.replace(product.getProductId(), statistic.get(product.getProductId()) + 1);
 
             for (Integer i:
-                 statistic.values()) {
-                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "'," + statistic.get(i).toString());
-            }
+                 statistic.keySet())
+                buffer.add("'" + i.toString() + "--" + productRepository.findByProductId(i).getProductName() + "', " + statistic.get(i).toString() + ", '#b87333'");
 
             return buffer;
         } catch (Exception exp) {
-            //
+            System.out.println();
         }
 
         return null;
