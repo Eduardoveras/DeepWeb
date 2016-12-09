@@ -6,6 +6,7 @@ package com.evapps.Controller;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
+import com.evapps.Service.Auxiliary.EmailService;
 import com.evapps.Service.Auxiliary.StatisticService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
@@ -43,6 +44,8 @@ public class AdminController implements ErrorController {
     private DeleteDataService DDS;
     @Autowired
     private StatisticService SS;
+    @Autowired
+    private EmailService ES;
     private static final String ERR_PATH = "/error";
 
     @RequestMapping(value = ERR_PATH)
@@ -162,8 +165,10 @@ public class AdminController implements ErrorController {
         }
 
         try {
+            User u = new User(email,firstName,lastName,shippingAddress,country,city,password,per);
             CDS.registerNewUser(email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase(), shippingAddress,country,city, password,per );
 
+            ES.sendUserRegistrationConfirmation(u);
             // TODO: Send confirmation email
 
             return "redirect:/admin/users";

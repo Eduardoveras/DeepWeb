@@ -119,6 +119,24 @@ public class CreateDataService
         }
     }
 
+    public User registerNewUser( User u) throws Exception{
+
+        if (isEmailAddressTaken(u.getEmail()))
+            throw new IllegalArgumentException("This user Account already exist");
+
+        try {
+            User user = userRepository.save(u);
+            historyRepository.save(new History(user)); // Creating the users history
+            return user;
+        } catch (PersistenceException exp){
+            throw new PersistenceException("Persistence Error --> " + exp.getMessage());
+        } catch (NullArgumentException exp){
+            throw new NullArgumentException("Null Argument Error --> " + exp.getMessage());
+        } catch (Exception exp){
+            throw new Exception("General Error --> " + exp.getMessage());
+        }
+    }
+
     // Auxiliary Functions
     private boolean isEmailAddressTaken(String email){
         User user = userRepository.findByEmail(email);

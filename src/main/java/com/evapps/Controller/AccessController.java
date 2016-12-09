@@ -7,6 +7,7 @@ import com.evapps.Entity.History;
 import com.evapps.Entity.Product;
 import com.evapps.Entity.Receipt;
 import com.evapps.Entity.User;
+import com.evapps.Service.Auxiliary.EmailService;
 import com.evapps.Service.CRUD.CreateDataService;
 import com.evapps.Service.CRUD.DeleteDataService;
 import com.evapps.Service.CRUD.ReadDataService;
@@ -40,6 +41,8 @@ public class AccessController {
     private ReadDataService RDS;
     @Autowired
     private UpdateDataService UDS;
+    @Autowired
+    private EmailService ES;
 
 
     // Gets
@@ -301,6 +304,7 @@ public class AccessController {
 
             //Completing transaction
             Receipt receipt = CDS.registerTransaction(RDS.getCurrentLoggedUser().getEmail(), productList, amount, total);
+            ES.sendOrderConfirmationEmail(receipt);
 
             // TODO: Send email to admin for order confirmation
             return "redirect:/download_pdf/transaction?fiscalCode=" + receipt.getFiscalCode();
