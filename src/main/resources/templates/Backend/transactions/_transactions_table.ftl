@@ -16,7 +16,7 @@
                 <tbody>
                 <#list transactions as transaction>
                 <tr>
-                    <td>${transaction.getFiscalCode()}</td>
+                    <td><a href="/download_pdf/transaction?fiscalCode=${transaction.getFiscalCode()}"><strong>${transaction.getFiscalCode()}</strong></a></td>
                     <td>${transaction.getUser().getEmail()}</td>
                     <td>
                     <#list transaction.getProductList() as item>

@@ -19,7 +19,7 @@
     </div>
 </section>
 <!-- / catg header banner section -->
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" id="form1" style="display: none; opacity: 0;">
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" id="form1" target="_blank" style="display: none; opacity: 0;">
 
     <!-- Identify your business so that you can collect the payments. -->
     <input type="hidden" name="business" value="eduardo.storm-facilitator@gmail.com">
@@ -32,6 +32,9 @@
     <input type="hidden" name="amount" value="5.95">
     <input type="hidden" name="currency_code" value="USD">
     <input type="hidden" value="localhost:8090/download_pdf" name="return">
+    <input type="hidden" name="custom" value=""/>
+    <input type="hidden" name="notify_url" value="localhost:8090/products>
+
 
 
     <!-- Display the payment button. -->
@@ -336,7 +339,8 @@
                                         <label for="cashdelivery"><input type="radio" id="cashdelivery" name="optionsRadios"> Cash on Delivery </label>
                                         <label for="paypal"><input type="radio" id="paypal" name="optionsRadios" checked> Via Paypal </label>
                                         <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark">
-                                        <input type="button" value="Place Order" class="aa-browse-btn" onclick="submitForms()">
+                                        <input type="button" value="Place Order" class="aa-browse-btn" onclick="submitForm1()">
+                                        <input type="button" value="Get Receip" class="aa-browse-btn" onclick="submitForm2()">
                                     </div>
                                 </#if>
                                 </div>
@@ -350,19 +354,12 @@
 </section>
 
 <script>
-    submitForms = function(){
-
-        $.ajax({
-            url:'/confirm_transaction',
-            type:'post',
-            data:$('#form2').serialize(),
-            success:function(){
-                alert("worked");
-            }
-        });
+    submitForm1 = function(){
         document.getElementById("form1").submit();
+    };
 
-
+    submitForm2 = function(){
+        document.getElementById("form2").submit();
     }
 </script>
 <!-- / Cart view section -->

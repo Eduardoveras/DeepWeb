@@ -266,6 +266,7 @@ public class AccessController {
         return "redirect:/profile"; // TODO: Add error message
     }
 
+
     @PostMapping("/confirm_transaction")
     public String buyItemsInCart(){
 
