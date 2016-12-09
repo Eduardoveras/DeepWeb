@@ -77,15 +77,20 @@ public class StatisticService {
         return null;
     }
 
-    public Map<String, Integer> productSupplierStatistics(){
+    public ArrayList<String> productSupplierStatistics(){
 
         try {
             Map<String, Integer> statistic = fetchSupplierLegend();
+            ArrayList<String> buffer = new ArrayList<>();
 
             for (Product product: productRepository.findAll())
                 statistic.replace(product.getSupplier(), statistic.get(product.getSupplier()) + 1);
 
-            return statistic;
+            for (String supplier:
+                 statistic.keySet())
+                buffer.add("'" + supplier + "', " + statistic.get(supplier).toString());
+
+            return buffer;
 
         } catch (Exception exp) {
             //

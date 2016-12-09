@@ -16,10 +16,17 @@
                 <canvas id="purchaseS"></canvas>
             </div>
 
+            <br>
+
+            <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+                <canvas id="suppliers"></canvas>
+            </div>
+
             <script type="text/javascript">
                 google.charts.load('current', {'packages':['geochart','corechart','line',"calendar"]});
                 google.charts.setOnLoadCallback(drawProductViewBarChart());
-                //google.charts.setOnLoadCallback(drawSubFamilyChart);
+                google.charts.setOnLoadCallback(drawPurchaseBarChart());
+                google.charts.setOnLoadCallback(drawSupplierPieChart());
 
                 function drawProductViewBarChart() {
                     var data = google.visualization.arrayToDataTable([
@@ -64,6 +71,29 @@
                     };
 
                     var chart = new google.visualization.BarChart(document.getElementById('purchaseS'));
+                    chart.draw(data, options);
+                }
+
+                function drawSupplierPieChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['Supplier', 'Popularity'],
+                    <#list supplierStatistics as supplier>
+                        <#if supplier?is_last>
+                                [${supplier}]
+                        <#else>
+                                [${supplier}],
+                        </#if>
+                    </#list>
+                    ]);
+
+                    var options = {
+                        title: 'Supplier Popularity Among Buyers',
+                        'min-width':300,
+                        'min-height':300,
+                        legend: 'none'
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('suppliers'));
                     chart.draw(data, options);
                 }
             </script>
