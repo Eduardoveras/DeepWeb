@@ -90,7 +90,7 @@ public class ReadDataService {
         if (!isEmailAddressTaken(email))
             throw new IllegalArgumentException("This user account does not exist");
 
-        return receiptRepository.findByUser(email);
+        return receiptRepository.findAll();
     }
 
     public List<Receipt> findRegisteredTransactionByStatus(OrderStatus status) { return receiptRepository.findByOrderStatus(status); }
