@@ -19,12 +19,14 @@ public class AppController {
     @Autowired
     private AdminController adminController;
 
+    @CrossOrigin(origins = "*")
     @RequestMapping("/rest/login")
     public boolean login(@RequestParam(value = "email", defaultValue = "ev@gmail.com") String email,
                          @RequestParam(value = "password") String password){
         return RDS.findRegisteredUserAccount(email,password);
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping("/rest/transactions")
     public List<Receipt> tranaction(@RequestParam(value = "email", defaultValue = "ev@gmail.com") String email){
         return RDS.findRegisteredUserTransactions(email);
